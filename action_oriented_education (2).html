@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Action-Oriented Communication: Nothing to Prove</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .thesis {
+            font-size: 1.3rem;
+            font-style: italic;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .card h3 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .icon {
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .interactive-section {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            margin: 30px 0;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        .scenario {
+            background: #f8f9ff;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid #667eea;
+        }
+
+        .response-options {
+            display: grid;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .response-btn {
+            padding: 15px 20px;
+            border: 2px solid #667eea;
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
+
+        .response-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .response-btn.correct {
+            background: #4caf50;
+            color: white;
+            border-color: #4caf50;
+        }
+
+        .response-btn.incorrect {
+            background: #f44336;
+            color: white;
+            border-color: #f44336;
+        }
+
+        .feedback {
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .feedback.correct {
+            background: #e8f5e8;
+            color: #2e7d2e;
+            border: 1px solid #4caf50;
+        }
+
+        .feedback.incorrect {
+            background: #ffeaea;
+            color: #c62828;
+            border: 1px solid #f44336;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .key-points {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .point-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .point-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .point-card h4 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+
+        .reset-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .reset-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .completion-message {
+            background: linear-gradient(135deg, #4caf50, #45a049);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            display: none;
+            margin: 20px 0;
+        }
+
+        .evolution-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .phase-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.5s ease;
+            border-left: 5px solid #ccc;
+        }
+
+        .phase-card[data-phase="1"] { border-left-color: #f44336; }
+        .phase-card[data-phase="2"] { border-left-color: #ff9800; }
+        .phase-card[data-phase="3"] { border-left-color: #2196f3; }
+        .phase-card[data-phase="4"] { border-left-color: #4caf50; }
+
+        .phase-card.active {
+            transform: scale(1.05);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+
+        .phase-visual {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin: 15px 0;
+            min-height: 60px;
+        }
+
+        .person.defensive { background: #f44336; animation: shake 0.5s ease-in-out; }
+        .person.curious { background: #ff9800; }
+        .person.understanding { background: #2196f3; }
+        .person.collaborative { background: #4caf50; }
+
+        .empathy-map {
+            display: grid;
+            grid-template-areas: 
+                "say center hear"
+                "do center see";
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 20px;
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+        }
+
+        .empathy-center {
+            grid-area: center;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .empathy-section {
+            background: #f8f9ff;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #e0e7ff;
+            transition: all 0.3s ease;
+        }
+
+        .empathy-section[data-section="say"] { grid-area: say; }
+        .empathy-section[data-section="do"] { grid-area: do; }
+        .empathy-section[data-section="hear"] { grid-area: hear; }
+        .empathy-section[data-section="see"] { grid-area: see; }
+
+        .empathy-section.highlighted {
+            background: #fff3cd;
+            border-color: #ffc107;
+            transform: scale(1.02);
+        }
+
+        .empathy-content {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .need-item, .quote-item, .action-item, .hear-item, .see-item {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .empathy-insight {
+            background: linear-gradient(135deg, #4caf50, #45a049);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .shared-goal {
+            background: #4caf50;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .adversarial {
+            border-left: 5px solid #f44336;
+        }
+
+        .collaborative {
+            border-left: 5px solid #4caf50;
+        }
+
+        .conflict-visual {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+            min-height: 80px;
+        }
+
+        .person {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .person-left, .person-right {
+            background: #f44336;
+        }
+
+        .person.angry {
+            animation: shake 0.5s ease-in-out infinite;
+        }
+
+        .person-team {
+            background: #4caf50;
+            animation: none;
+        }
+
+        .team {
+            display: flex;
+            gap: 10px;
+        }
+
+        .vs-symbol {
+            font-size: 24px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .problem {
+            background: #ff9800;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .conflict-text {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .demo-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 20px auto;
+        }
+
+        .demo-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-3px); }
+            75% { transform: translateX(3px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Action-Oriented Communication</h1>
+            <div class="thesis">
+                "The action-oriented person just wants to know from you what can be done. There is nothing to prove."
+            </div>
+        </div>
+
+        <div class="content-grid">
+            <div class="card">
+                <h3><span class="icon">1</span>Detach from the Messenger</h3>
+                <p>Focus on the message, not the person delivering it. This subtle shift helps move past emotional friction and defensiveness by making the content the center of attention rather than personalities or past conflicts.</p>
+            </div>
+
+            <div class="card">
+                <h3><span class="icon">2</span>Move from 'Why' to 'What'</h3>
+                <p>Instead of getting stuck asking "why did this happen?" or "why are you doing this?", redirect to "what can we do now?" This forward-looking approach prevents endless analysis and drives toward solutions.</p>
+            </div>
+
+            <div class="card">
+                <h3><span class="icon">3</span>Us vs. The Problem</h3>
+                <p>Transform "me vs. you" dynamics into "us vs. the obstacle." Instead of proving who's right, both people work together against the shared challenge blocking their shared goals.</p>
+            </div>
+        </div>
+
+        <div class="interactive-section">
+            <h2>The Evolution: From Defense to Connection</h2>
+            <p>Watch how relationships transform when we stop proving and start understanding:</p>
+            
+            <div class="evolution-container">
+                <div class="phase-card" data-phase="1">
+                    <h4>🌱 Phase 1: Recognizing the Dynamic</h4>
+                    <p><strong>The Pattern:</strong> "I need to prove I'm right about this."</p>
+                    <p><strong>The Shift:</strong> Recognizing that both people are caught in a defensive cycle, not personal failing.</p>
+                    <div class="phase-visual">
+                        <div class="person defensive">Me</div>
+                        <div class="vs-symbol">😤</div>
+                        <div class="person defensive">You</div>
+                    </div>
+                </div>
+
+                <div class="phase-card" data-phase="2">
+                    <h4>🌿 Phase 2: Understanding Perspectives</h4>
+                    <p><strong>The Pattern:</strong> "Let me explain why I'm doing this..."</p>
+                    <p><strong>The Shift:</strong> What if we both have valid needs that led to this moment?</p>
+                    <div class="phase-visual">
+                        <div class="person curious">Me</div>
+                        <div class="vs-symbol">🤔</div>
+                        <div class="person curious">You</div>
+                    </div>
+                </div>
+
+                <div class="phase-card" data-phase="3">
+                    <h4>🌸 Phase 3: Embracing Shared Humanity</h4>
+                    <p><strong>The Pattern:</strong> "We're both struggling with this situation."</p>
+                    <p><strong>The Shift:</strong> Neither of us needs to be wrong for both of us to be understood.</p>
+                    <div class="phase-visual">
+                        <div class="person understanding">Me</div>
+                        <div class="vs-symbol">💭</div>
+                        <div class="person understanding">You</div>
+                    </div>
+                </div>
+
+                <div class="phase-card" data-phase="4">
+                    <h4>🌺 Phase 4: Co-creating Solutions</h4>
+                    <p><strong>The Pattern:</strong> "What do we both need to make this work?"</p>
+                    <p><strong>The Result:</strong> Authentic partnership focused on shared outcomes.</p>
+                    <div class="phase-visual">
+                        <div class="team">
+                            <div class="person collaborative">Me</div>
+                            <div class="person collaborative">You</div>
+                        </div>
+                        <div class="vs-symbol">🎯</div>
+                        <div class="shared-goal">Our Goal</div>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="demo-btn" onclick="cyclePhases()">Cycle Through Evolution</button>
+        </div>
+
+        <div class="interactive-section">
+            <h2>Empathy Mapping: Understanding Needs</h2>
+            <p>Before jumping to solutions, map out what each person actually needs:</p>
+            
+            <div class="empathy-map">
+                <div class="empathy-center">
+                    <h4>What do they think & feel?</h4>
+                    <div class="empathy-content" id="empathyCenter">
+                        <div class="need-item">Wants to feel heard</div>
+                        <div class="need-item">Frustrated by current situation</div>
+                        <div class="need-item">Worried about the relationship</div>
+                    </div>
+                </div>
+                
+                <div class="empathy-section" data-section="say">
+                    <h4>What do they say?</h4>
+                    <div class="empathy-content">
+                        <div class="quote-item">"This isn't working"</div>
+                        <div class="quote-item">"I feel unheard"</div>
+                        <div class="quote-item">"We need to talk"</div>
+                    </div>
+                </div>
+                
+                <div class="empathy-section" data-section="do">
+                    <h4>What do they do?</h4>
+                    <div class="empathy-content">
+                        <div class="action-item">Withdraw from conversation</div>
+                        <div class="action-item">Repeat their point</div>
+                        <div class="action-item">Seek validation elsewhere</div>
+                    </div>
+                </div>
+                
+                <div class="empathy-section" data-section="hear">
+                    <h4>What do they hear?</h4>
+                    <div class="empathy-content">
+                        <div class="hear-item">"You're being unreasonable"</div>
+                        <div class="hear-item">"Other couples don't have this problem"</div>
+                        <div class="hear-item">Their own inner critic</div>
+                    </div>
+                </div>
+                
+                <div class="empathy-section" data-section="see">
+                    <h4>What do they see?</h4>
+                    <div class="empathy-content">
+                        <div class="see-item">Tension in your face</div>
+                        <div class="see-item">The same problem recurring</div>
+                        <div class="see-item">Other couples who seem happier</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="empathy-insight">
+                <h4>💡 The Insight</h4>
+                <p>When you map what someone actually needs (to feel heard, to contribute, to matter), you often discover you want the same things. The conflict isn't about positions—it's about unmet needs that you can address together.</p>
+            </div>
+            
+            <button class="demo-btn" onclick="highlightNeeds()">Highlight Shared Needs</button>
+        </div>
+
+        <div class="interactive-section">
+            <h2>Relationship Practice Scenarios</h2>
+            <p>See how "nothing to prove" transforms relationship conflicts from adversarial to collaborative:</p>
+            
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar"></div>
+            </div>
+            
+            <div id="scenario1" class="scenario">
+                <h4>Scenario 1: Household Chores Conflict</h4>
+                <p><strong>Situation:</strong> Your partner says, "I always end up doing the dishes. You never help with kitchen cleanup and it's not fair. I shouldn't have to ask every single time."</p>
+                
+                <div class="response-options">
+                    <button class="response-btn" onclick="selectResponse(1, 'incorrect')">
+                        "That's not true - I helped last week, and I do other things around the house. You're being unfair."
+                    </button>
+                    <button class="response-btn" onclick="selectResponse(1, 'incorrect')">
+                        "Why didn't you just ask me? I would have helped if you communicated better about what you needed."
+                    </button>
+                    <button class="response-btn" onclick="selectResponse(1, 'correct')">
+                        "You're right that the current system isn't working for either of us. What would make the kitchen routine feel more balanced?"
+                    </button>
+                </div>
+                
+                <div class="feedback" id="feedback1">
+                    <strong>Perfect!</strong> This response transforms "me vs. you" into "us vs. the problem." Instead of defending or blame-shifting, you acknowledge the shared goal (a functioning kitchen routine) and focus on collaborative solutions.
+                </div>
+            </div>
+
+            <div id="scenario2" class="scenario" style="display: none;">
+                <h4>Scenario 2: Money Management Disagreement</h4>
+                <p><strong>Situation:</strong> During a financial discussion, your partner says, "You're always questioning my purchases but you spend money on things I think are wasteful too. I feel like you don't trust my judgment."</p>
+                
+                <div class="response-options">
+                    <button class="response-btn" onclick="selectResponse(2, 'correct')">
+                        "We both want to feel trusted and reach our financial goals. What would help us make money decisions that feel good to both of us?"
+                    </button>
+                    <button class="response-btn" onclick="selectResponse(2, 'incorrect')">
+                        "I do trust you, but we need to be responsible. Let me explain why I think some purchases are necessary and others aren't."
+                    </button>
+                    <button class="response-btn" onclick="selectResponse(2, 'incorrect')">
+                        "Why do you think I don't trust you? I'm just trying to make sure we're being smart with our money."
+                    </button>
+                </div>
+                
+                <div class="feedback" id="feedback2">
+                    <strong>Excellent!</strong> You've identified the shared values (trust and financial security) and external challenge (finding a decision-making process that honors both). No one has to be wrong about their spending for a solution to emerge.
+                </div>
+            </div>
+
+            <div id="scenario3" class="scenario" style="display: none;">
+                <h4>Scenario 3: Social Plans Tension</h4>
+                <p><strong>Situation:</strong> Your partner says, "You always want to stay home, but I need more social time. I feel like you don't care about what makes me happy, and I'm tired of always compromising."</p>
+                
+                <div class="response-options">
+                    <button class="response-btn" onclick="selectResponse(3, 'incorrect')">
+                        "I do care about your happiness. You know social situations drain me - that's just who I am. I can't help that."
+                    </button>
+                    <button class="response-btn" onclick="selectResponse(3, 'correct')">
+                        "We both want to feel fulfilled and connected. How can we create a social calendar that energizes you while still giving me the downtime I need?"
+                    </button>
+                    <button class="response-btn" onclick="selectResponse(3, 'incorrect')">
+                        "Why do you think I don't care? I go out sometimes. Can't you just enjoy quiet time at home once in a while?"
+                    </button>
+                </div>
+                
+                <div class="feedback" id="feedback3">
+                    <strong>Beautiful!</strong> This reframes different social needs as a logistics challenge rather than incompatible personalities. Both people's needs become valid data points for crafting a solution, not competing demands requiring someone to lose.
+                </div>
+            </div>
+
+        <div class="interactive-section">
+            <h2>Real-Time Conflict Transformation</h2>
+            <p>Experience how the same situation evolves as you apply "nothing to prove" principles:</p>
+            
+            <div class="transformation-demo">
+                <div class="scenario-setup">
+                    <h4>The Situation: Weekend Plans Disagreement</h4>
+                    <p>"You always want to stay home on weekends. I'm tired of being the one who has to push for us to do anything social."</p>
+                </div>
+                
+                <div class="response-evolution">
+                    <div class="response-stage" id="stage1">
+                        <h5>🌱 Defensive Response</h5>
+                        <div class="response-text">"That's not true! I went out last weekend, and I never said I don't want to be social. You're being unfair."</div>
+                        <div class="result">Result: Escalation, hurt feelings, no solution</div>
+                    </div>
+                    
+                    <div class="response-stage" id="stage2" style="display: none;">
+                        <h5>🌿 Understanding Response</h5>
+                        <div class="response-text">"I can see that you're feeling like the social planning always falls on you. That sounds exhausting."</div>
+                        <div class="result">Result: De-escalation, validation, opening for dialogue</div>
+                    </div>
+                    
+                    <div class="response-stage" id="stage3" style="display: none;">
+                        <h5>🌺 Collaborative Response</h5>
+                        <div class="response-text">"We both want to feel connected and have fun together. What would help us create a weekend routine that energizes both of us?"</div>
+                        <div class="result">Result: Shared problem-solving, strengthened partnership</div>
+                    </div>
+                </div>
+                
+                <button class="demo-btn" onclick="nextResponseStage()">See Evolution</button>
+            </div>
+        </div>
+                <h3>🎉 Congratulations!</h3>
+                <p>You've completed all scenarios and demonstrated understanding of action-oriented communication. Remember: when there's nothing to prove, there's everything to accomplish together.</p>
+            </div>
+
+            <button class="reset-btn" onclick="resetQuiz()">Reset Practice</button>
+        </div>
+
+            <div class="key-points">
+            <div class="point-card">
+                <h4>Detach from Messenger</h4>
+                <p>Focus on the message content, not the person or their delivery style</p>
+            </div>
+            <div class="point-card">
+                <h4>Why → What</h4>
+                <p>Replace "why" questions with "what can we do" solutions</p>
+            </div>
+            <div class="point-card">
+                <h4>Us vs. The Problem</h4>
+                <p>Transform conflicts from "me vs. you" into "us vs. the obstacle"</p>
+            </div>
+            <div class="point-card">
+                <h4>Nothing to Prove</h4>
+                <p>Eliminate the need for justification and focus on shared solutions</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentScenario = 1;
+        let correctAnswers = 0;
+        let totalScenarios = 3;
+
+        function selectResponse(scenarioNum, responseType) {
+            // Disable all buttons for this scenario
+            const buttons = document.querySelectorAll(`#scenario${scenarioNum} .response-btn`);
+            buttons.forEach(btn => {
+                btn.style.pointerEvents = 'none';
+                if (btn.onclick.toString().includes(responseType)) {
+                    btn.classList.add(responseType);
+                }
+            });
+
+            // Show feedback
+            const feedback = document.getElementById(`feedback${scenarioNum}`);
+            feedback.style.display = 'block';
+            feedback.classList.add(responseType);
+
+            if (responseType === 'correct') {
+                correctAnswers++;
+            }
+
+            // Update progress
+            updateProgress();
+
+            // Show next scenario after delay
+            setTimeout(() => {
+                if (currentScenario < totalScenarios) {
+                    document.getElementById(`scenario${currentScenario}`).style.display = 'none';
+                    currentScenario++;
+                    document.getElementById(`scenario${currentScenario}`).style.display = 'block';
+                } else {
+                    // Show completion message
+                    document.getElementById(`scenario${currentScenario}`).style.display = 'none';
+                    document.getElementById('completionMessage').style.display = 'block';
+                }
+            }, 3000);
+        }
+
+        function updateProgress() {
+            const progress = (currentScenario / totalScenarios) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        function resetQuiz() {
+            currentScenario = 1;
+            correctAnswers = 0;
+
+            // Reset all scenarios
+            for (let i = 1; i <= totalScenarios; i++) {
+                const scenario = document.getElementById(`scenario${i}`);
+                const buttons = scenario.querySelectorAll('.response-btn');
+                const feedback = document.getElementById(`feedback${i}`);
+
+                // Reset buttons
+                buttons.forEach(btn => {
+                    btn.style.pointerEvents = 'auto';
+                    btn.classList.remove('correct', 'incorrect');
+                });
+
+                // Hide feedback
+                feedback.style.display = 'none';
+                feedback.classList.remove('correct', 'incorrect');
+
+                // Hide all scenarios except first
+                scenario.style.display = i === 1 ? 'block' : 'none';
+            }
+
+            // Hide completion message
+            document.getElementById('completionMessage').style.display = 'none';
+
+            // Reset progress bar
+            document.getElementById('progressBar').style.width = '0%';
+        }
+
+        let currentResponseStage = 1;
+
+        function nextResponseStage() {
+            // Hide current stage
+            document.getElementById(`stage${currentResponseStage}`).style.display = 'none';
+            
+            // Show next stage
+            currentResponseStage++;
+            if (currentResponseStage <= 3) {
+                const nextStage = document.getElementById(`stage${currentResponseStage}`);
+                nextStage.style.display = 'block';
+                nextStage.classList.add('active');
+                
+                // Update button text
+                if (currentResponseStage === 3) {
+                    document.querySelector('.transformation-demo .demo-btn').textContent = 'Reset Demo';
+                }
+            } else {
+                // Reset
+                currentResponseStage = 1;
+                document.getElementById('stage1').style.display = 'block';
+                document.getElementById('stage2').style.display = 'none';
+                document.getElementById('stage3').style.display = 'none';
+                document.querySelectorAll('.response-stage').forEach(stage => {
+                    stage.classList.remove('active');
+                });
+                document.querySelector('.transformation-demo .demo-btn').textContent = 'See Evolution';
+            }
+        }
+
+        function cyclePhases() {
+            const phases = document.querySelectorAll('.phase-card');
+            let currentIndex = 0;
+            
+            function showPhase(index) {
+                phases.forEach((phase, i) => {
+                    phase.classList.toggle('active', i === index);
+                });
+            }
+            
+            showPhase(0);
+            
+            const interval = setInterval(() => {
+                currentIndex = (currentIndex + 1) % phases.length;
+                showPhase(currentIndex);
+                
+                if (currentIndex === 0) {
+                    clearInterval(interval);
+                }
+            }, 2000);
+        }
+
+        function highlightNeeds() {
+            const sections = document.querySelectorAll('.empathy-section');
+            const needItems = document.querySelectorAll('.need-item');
+            
+            // Highlight the center (needs) first
+            needItems.forEach((item, index) => {
+                setTimeout(() => {
+                    item.style.background = '#ffeb3b';
+                    item.style.transform = 'scale(1.05)';
+                }, index * 500);
+            });
+            
+            // Then highlight related sections
+            setTimeout(() => {
+                sections.forEach(section => {
+                    section.classList.add('highlighted');
+                });
+            }, 1500);
+            
+            // Reset after animation
+            setTimeout(() => {
+                needItems.forEach(item => {
+                    item.style.background = '';
+                    item.style.transform = '';
+                });
+                sections.forEach(section => {
+                    section.classList.remove('highlighted');
+                });
+            }, 4000);
+        }
+
+        function toggleDynamics() {
+            const adversarialCards = document.querySelectorAll('.adversarial');
+            const collaborativeCards = document.querySelectorAll('.collaborative');
+            
+            adversarialCards.forEach(card => {
+                card.style.transform = card.style.transform === 'scale(1.05)' ? 'scale(1)' : 'scale(1.05)';
+            });
+            
+            collaborativeCards.forEach(card => {
+                card.style.transform = card.style.transform === 'scale(1.05)' ? 'scale(1)' : 'scale(1.05)';
+            });
+        }
+        window.addEventListener('load', function() {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(20px)';
+                    card.style.transition = 'all 0.6s ease';
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, 50);
+                }, index * 200);
+            });
+        });
+    </script>
+</body>
+</html>
