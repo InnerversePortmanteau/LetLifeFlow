@@ -11,7 +11,7 @@
         const manifest = {
             "name": "Let Life Flow",
             "short_name": "LetFlow",
-            "start_url": "./pwa.html",
+            "start_url": "./index.html",
             "display": "standalone",
             "background_color": "#ffffff",
             "theme_color": "#667eea",
@@ -41,10 +41,1055 @@
             padding: 0;
             box-sizing: border-box;
         }
-        /* ...rest of the CSS unchanged... */
+
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+            overflow: hidden;
+        }
+
+        /* Floating background elements */
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .floating-element {
+            position: absolute;
+            opacity: 0.1;
+            animation: float 8s ease-in-out infinite;
+            font-size: 2rem;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.1; }
+            50% { transform: translateY(-30px) rotate(180deg); opacity: 0.2; }
+        }
+
+        .hero-content {
+            z-index: 2;
+            max-width: 900px;
+            padding: 3rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .hero h1 {
+            font-size: 3.8rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.4rem;
+            color: #666;
+            margin-bottom: 2rem;
+            font-style: italic;
+        }
+
+        .twin-philosophy {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .philosophy-card {
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: left;
+            transition: all 0.3s ease;
+        }
+
+        .let-them-card {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            border-left: 5px solid #ff6b6b;
+        }
+
+        .blame-reflex-card {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-left: 5px solid #4ecdc4;
+        }
+
+        .philosophy-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+        }
+
+        .philosophy-card p {
+            font-size: 0.95rem;
+            color: #555;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .content {
+            background: white;
+            min-height: 100vh;
+            padding: 4rem 0;
+        }
+
+        .section {
+            margin-bottom: 5rem;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s ease;
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section h2 {
+            font-size: 2.8rem;
+            color: #2c3e50;
+            margin-bottom: 2rem;
+            position: relative;
+            text-align: center;
+        }
+
+        .section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 2px;
+        }
+
+        /* General Card Styles */
+        .wisdom-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            margin: 3rem 0;
+        }
+
+        .wisdom-card {
+            background: #f8f9fa;
+            padding: 2.5rem;
+            border-radius: 20px;
+            border-left: 6px solid;
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+
+        .wisdom-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .let-them-wisdom { border-color: #ff6b6b; }
+        .let-me-wisdom { border-color: #4ecdc4; }
+
+        .wisdom-card h3 {
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+        }
+
+        .wisdom-card .principle {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .let-them-principle { color: #ff6b6b; }
+        .let-me-principle { color: #4ecdc4; }
+
+        /* Scenario Selector */
+        .scenario-selector {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 3rem;
+            border-radius: 25px;
+            margin: 3rem 0;
+            text-align: center;
+        }
+
+        .scenario-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .scenario-btn {
+            padding: 1.5rem;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .scenario-btn:hover {
+            border-color: #667eea;
+            background: #f0f8ff;
+            transform: scale(1.02);
+        }
+
+        .scenario-result {
+            margin-top: 2rem;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            display: none;
+        }
+        
+        /* Interactive Exercise */
+        .interactive-exercise {
+            background: linear-gradient(135deg, #e0c3fc 0%, #9bb5ff 100%);
+            padding: 3rem;
+            border-radius: 25px;
+            margin: 3rem 0;
+        }
+
+        .exercise-input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            margin: 1rem 0;
+        }
+
+        .exercise-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .exercise-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Unified Quote */
+        .unified-quote {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem;
+            border-radius: 25px;
+            margin: 4rem 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .unified-quote::before {
+            content: '"';
+            font-size: 6rem;
+            position: absolute;
+            top: -20px;
+            left: 30px;
+            opacity: 0.3;
+        }
+
+        .unified-quote p {
+            font-size: 1.4rem;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .quote-attribution {
+            font-style: italic;
+            opacity: 0.8;
+            font-size: 1rem;
+        }
+
+        /* Mastery Section */
+        .mastery-section {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            padding: 4rem 2rem;
+            margin: 4rem -2rem;
+            border-radius: 25px;
+            text-align: center;
+        }
+
+        .mastery-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .step-card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2rem;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .step-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .step-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .step-1 { color: #ff6b6b; }
+        .step-2 { color: #4ecdc4; }
+        .step-3 { color: #45b7d1; }
+
+        /* Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: rgba(102, 126, 234, 0.2);
+            z-index: 1000;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            width: 0%;
+            transition: width 0.1s ease;
+        }
+
+        /* Counter */
+        .wisdom-counter {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .counter-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .counter-card:hover {
+            transform: scale(1.02);
+        }
+
+        .let-them-counter { border-top: 5px solid #ff6b6b; }
+        .let-me-counter { border-top: 5px solid #4ecdc4; }
+
+        .counter-number {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Ripple Effect */
+        .ripple-effect {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ripple-effect::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .ripple-effect:active::after {
+            width: 300px;
+            height: 300px;
+        }
+        
+        /* Message Box instead of alert */
+        .message-box {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            z-index: 10000;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            animation: fadeIn 0.5s ease-out;
+            max-width: 400px;
+            display: none;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+            to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        }
+
+        /* Media Queries */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.8rem; }
+            .twin-philosophy { grid-template-columns: 1fr; }
+            .wisdom-grid { grid-template-columns: 1fr; }
+            .scenario-buttons { grid-template-columns: 1fr; }
+            .mastery-steps { grid-template-columns: 1fr; }
+            .wisdom-counter { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
-    <!-- ...entire body content from your index.html... -->
+    <div class="progress-bar">
+        <div class="progress-fill" id="progressBar"></div>
+    </div>
+    
+    <div class="message-box" id="messageBox">
+        <p id="messageText"></p>
+        <small>Click to close</small>
+    </div>
+
+    <section class="hero">
+        <div class="floating-elements">
+            <div class="floating-element" style="top: 5%; left: 10%;">🌊</div>
+            <div class="floating-element" style="top: 15%; right: 15%;">🎭</div>
+            <div class="floating-element" style="bottom: 25%; left: 20%;">⚖️</div>
+            <div class="floating-element" style="top: 35%; right: 25%;">🔮</div>
+            <div class="floating-element" style="bottom: 15%; right: 10%;">🗝️</div>
+            <div class="floating-element" style="top: 60%; left: 5%;">🕊️</div>
+        </div>
+        
+        <div class="hero-content">
+            <h1>Let Life Flow</h1>
+            <div class="hero-subtitle">The Art of Surrender and Self-Ownership</div>
+            
+            <div class="twin-philosophy">
+                <div class="philosophy-card let-them-card">
+                    <h3>🌊 The Flow Principle</h3>
+                    <p>Stop fighting the current. Let them be who they are. Let life unfold as it will. Your peace isn't dependent on controlling the uncontrollable.</p>
+                </div>
+                <div class="philosophy-card blame-reflex-card">
+                    <h3>🗝️ The Ownership Principle</h3>
+                    <p>Take the wheel where it matters. Let me choose my response. Let me focus my energy. Your power lies in what you do, not what happens to you.</p>
+                </div>
+            </div>
+            
+            <button class="exercise-button ripple-effect" onclick="scrollToContent()">Discover Your Path</button>
+        </div>
+    </section>
+
+    <div class="content">
+        <div class="container">
+            <div class="section">
+                <h2>The Universal Truth</h2>
+                <div class="unified-quote">
+                    <p>Life is simultaneously completely out of our control and entirely within our power to navigate. The secret isn't choosing between surrender and ownership—it's knowing when to apply each. And the bridge between knowing and doing is listening.</p>
+                    <div class="quote-attribution">— The Merged Wisdom</div>
+                </div>
+                
+                <p style="font-size: 1.2rem; text-align: center; margin: 2rem 0;">Three profound principles merge into one transformative approach: accepting what we cannot change, taking ownership of what we can, and listening deeply to know the difference. This creates the foundation for wise action in an uncertain world.</p>
+            </div>
+
+            <div class="section">
+                <h2>The Three Pillars of Wisdom</h2>
+                <div class="wisdom-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+                    <div class="wisdom-card let-them-wisdom">
+                        <div class="principle let-them-principle">LISTEN FIRST</div>
+                        <h3>The Art of Understanding</h3>
+                        <p><strong>Listen</strong> to what's really being said beneath the words.</p>
+                        <p><strong>Listen</strong> to the emotions behind the message.</p>
+                        <p><strong>Listen</strong> for what you can and cannot influence.</p>
+                        <p><strong>Listen</strong> before you judge, react, or respond.</p>
+                        <p style="margin-top: 1rem; font-style: italic; color: #666;">True power begins with true understanding.</p>
+                    </div>
+                    
+                    <div class="wisdom-card" style="border-left: 6px solid #ff9a9e;">
+                        <div class="principle" style="color: #ff6b6b;">LET THEM</div>
+                        <h3>The Art of Release</h3>
+                        <p><strong>Let them</strong> have their reactions and responses.</p>
+                        <p><strong>Let them</strong> make their choices and face consequences.</p>
+                        <p><strong>Let them</strong> be imperfect and human.</p>
+                        <p style="margin-top: 1rem; font-style: italic; color: #666;">Not everything requires your intervention.</p>
+                    </div>
+                    
+                    <div class="wisdom-card let-me-wisdom">
+                        <div class="principle let-me-principle">LET ME</div>
+                        <h3>The Art of Ownership</h3>
+                        <p><strong>Let me</strong> respond with intention, not reaction.</p>
+                        <p><strong>Let me</strong> focus my energy where it matters.</p>
+                        <p><strong>Let me</strong> set boundaries that protect my peace.</p>
+                        <p><strong>Let me</strong> choose my actions based on my values.</p>
+                        <p style="margin-top: 1rem; font-style: italic; color: #666;">Your response is your responsibility and your power.</p>
+                    </div>
+                </div>
+                
+                <div style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); padding: 2rem; border-radius: 20px; margin: 3rem 0; text-align: center;">
+                    <h3 style="color: #2c3e50; margin-bottom: 1rem;">The Integration</h3>
+                    <p style="font-size: 1.1rem; color: #555;">Active listening reveals what deserves your attention and what doesn't. It shows you when to let go and when to lean in. Without listening, "Let Them" becomes avoidance and "Let Me" becomes reactivity. With listening, both become wisdom.</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Practice Makes Wisdom</h2>
+                <div class="wisdom-counter">
+                    <div class="counter-card let-them-counter" onclick="incrementLetThem()">
+                        <div class="counter-number" id="letThemCount">0</div>
+                        <div><strong>Let Them Moments</strong></div>
+                        <small>Times you chose to release control</small>
+                    </div>
+                    <div class="counter-card let-me-counter" onclick="incrementLetMe()">
+                        <div class="counter-number" id="letMeCount">0</div>
+                        <div><strong>Let Me Actions</strong></div>
+                        <small>Times you took purposeful ownership</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>The Listening Laboratory</h2>
+                <div class="interactive-exercise" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);">
+                    <h3 style="color: #2c3e50; margin-bottom: 2rem;">Practice Active Listening Techniques</h3>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 2rem 0;">
+                        <div style="background: rgba(255, 255, 255, 0.9); padding: 1.5rem; border-radius: 15px;">
+                            <h4 style="color: #2c3e50;">Reflective Listening</h4>
+                            <p>Mirror emotions and paraphrase understanding</p>
+                            <div style="background: #f3e5f5; padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+                                <input type="text" id="reflectiveInput" placeholder="What did someone tell you today?" style="width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 5px; margin-bottom: 1rem;">
+                                <button onclick="generateReflectiveResponse()" style="width: 100%; padding: 0.5rem; background: #7b1fa2; color: white; border: none; border-radius: 5px; cursor: pointer;">Generate Reflective Response</button>
+                                <div id="reflectiveResponse" style="margin-top: 1rem; padding: 1rem; background: white; border-radius: 5px; display: none;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="background: rgba(255, 255, 255, 0.9); padding: 2rem; border-radius: 20px; margin-top: 3rem;">
+                        <h3 style="color: #2c3e50; text-align: center; margin-bottom: 1rem;">Listening with Empathy: A Case Study in ADHD</h3>
+                        <div style="background: #e3f2fd; padding: 1rem; border-radius: 8px; margin: 1rem 0; border-left: 4px solid #2196f3;">
+                            <p>For some, the "Listen First" principle is a powerful act of will. For others, it's a profound challenge rooted in neurology. When a person struggles with Attention-Deficit/Hyperactivity Disorder (ADHD), their brain may have difficulty with sustained attention, impulsivity, and emotional regulation. This can manifest as interrupting or seeming distracted, which can be frustrating for all involved.</p>
+                            <p style="margin-top: 1rem;">Instead of seeing this as a flaw, we can apply our "Let Them" principle. We can let them be neurodivergent and acknowledge that their brain processes information differently. This frees us to choose our response ("Let Me") from a place of understanding, rather than frustration.</p>
+                        </div>
+                        <h4 style="color: #2c3e50; margin-top: 2rem; margin-bottom: 1rem;">Strategies for both sides of the conversation:</h4>
+                        <ul style="list-style-type: none; padding-left: 0; margin-left: 0;">
+                            <li style="margin-bottom: 1rem; background: #f8f9fa; padding: 1rem; border-radius: 8px; border-left: 4px solid #ff6b6b;">
+                                <strong>For the listener:</strong> If you are talking to someone with ADHD who seems distracted, remember to **listen to the person, not the behavior**. Instead of feeling ignored, try a strategy like taking a break or asking, "Is now a good time to talk?"
+                            </li>
+                            <li style="margin-bottom: 1rem; background: #f8f9fa; padding: 1rem; border-radius: 8px; border-left: 4px solid #4ecdc4;">
+                                <strong>For the person with ADHD:</strong> Practice focusing on physical cues , like eye contact, and consider using a small notebook to jot down key points. This helps externalize the mental effort and allows you to stay present in the conversation.
+                            </li>
+                            <li style="margin-bottom: 1rem; background: #f8f9fa; padding: 1rem; border-radius: 8px; border-left: 4px solid #667eea;">
+                                <strong>For both:</strong> Recognize that a brief interruption or moment of distraction is not a sign of disrespect. It's an invitation to pause, breathe, and redirect attention back to the shared goal of the conversation.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>Wisdom Through Listening Scenarios</h2>
+                <div class="scenario-selector">
+                    <h3 style="margin-bottom: 2rem; color: #2c3e50;">When someone is struggling, how do you listen wisely?</h3>
+                    <div class="scenario-buttons">
+                        <div class="scenario-btn" onclick="showListeningScenario('overwhelmed')">
+                            <strong>😰 Overwhelmed Friend</strong><br>
+                            "I can't handle everything on my plate right now"
+                        </div>
+                        <div class="scenario-btn" onclick="showListeningScenario('criticism')">
+                            <strong>😤 Receiving Criticism</strong><br>
+                            Someone is telling you what you're doing wrong
+                        </div>
+                        <div class="scenario-btn" onclick="showListeningScenario('venting')">
+                            <strong>😡 Angry Venting</strong><br>
+                            A colleague is furious about an unfair situation
+                        </div>
+                        <div class="scenario-btn" onclick="showListeningScenario('relationship')">
+                            <strong>💔 Relationship Conflict</strong><br>
+                            Your partner feels unheard and disconnected
+                        </div>
+                    </div>
+                    <div id="listeningScenarioResult" class="scenario-result"></div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>The Neutral Observer</h2>
+                <div class="interactive-exercise" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);">
+                    <h3 style="color: #2c3e50; margin-bottom: 2rem;">When you feel controlled, what do you hear?</h3>
+                    <textarea class="exercise-input" id="controlInput" placeholder="A family member is giving you 'advice' about your life. A co-worker is micromanaging a project. What do you hear?"></textarea>
+                    <button class="exercise-button" onclick="generateReframingWisdom()">Reframe This Feeling</button>
+                    <div id="reframeResponse" style="margin-top: 2rem; display: none;"></div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Your Personal Practice</h2>
+                <div class="interactive-exercise">
+                    <h3 style="color: #2c3e50; margin-bottom: 2rem;">What are you struggling to control right now?</h3>
+                    <textarea class="exercise-input" id="struggleInput" placeholder="Describe a situation that's been draining your energy because you're trying to control it..."></textarea>
+                    <button class="exercise-button" onclick="generateWisdom()">Transform This Struggle</button>
+                    <div id="wisdomResponse" style="margin-top: 2rem; display: none;"></div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>The Complete Framework</h2>
+                <div class="unified-quote">
+                    <p>Listen first to understand what's really happening. Then decide: What can I let them handle? What should I take ownership of? This simple sequence transforms chaos into clarity, reaction into response, and conflict into connection.</p>
+                    <div class="quote-attribution">— The Three Pillars Method</div>
+                </div>
+                
+                <div class="mastery-section">
+                    <h2 style="color: #2c3e50; margin-bottom: 2rem;">The Complete Practice</h2>
+                    <div class="mastery-steps" style="grid-template-columns: 1fr 1fr 1fr;">
+                        <div class="step-card">
+                            <div class="step-number" style="color: #ff9800;">1</div>
+                            <h3>Listen Deeply</h3>
+                            <p><strong>PAUSE.</strong> Before reacting, responding, or judging, truly listen. What are they really saying? What do they need? What's within your influence?</p>
+                            <div style="margin-top: 1rem; padding: 0.5rem; background: #fff3e0; border-radius: 5px; font-size: 0.9rem;">
+                                <strong>Practice:</strong> Suspend judgment, ask clarifying questions, mirror emotions
+                            </div>
+                        </div>
+                        <div class="step-card">
+                            <div class="step-number step-1">2</div>
+                            <h3>Let Them Be</h3>
+                            <p><strong>RELEASE.</strong> Let them have their reactions, make their choices, and face their consequences. Your peace doesn't depend on controlling them.</p>
+                            <div style="margin-top: 1rem; padding: 0.5rem; background: #ffebee; border-radius: 5px; font-size: 0.9rem;">
+                                <strong>Practice:</strong> Accept what you can't change, stop trying to fix others
+                            </div>
+                        </div>
+                        <div class="step-card">
+                            <div class="step-number step-2">3</div>
+                            <h3>Let Me Choose</h3>
+                            <p><strong>RESPOND.</strong> Now that you've listened and released control, choose your response consciously. Focus your energy where it can make a difference.</p>
+                            <div style="margin-top: 1rem; padding: 0.5rem; background: #e8f5e8; border-radius: 5px; font-size: 0.9rem;">
+                                <strong>Practice:</strong> Set boundaries, take purposeful action, own your response
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="background: rgba(255, 255, 255, 0.9); padding: 2rem; border-radius: 20px; margin-top: 3rem;">
+                        <h3 style="text-align: center; color: #2c3e50; margin-bottom: 1rem;">Your Daily Practice</h3>
+                        <div style="text-align: center;">
+                            <p style="margin-bottom: 2rem;">When life gets overwhelming, return to these three steps. They work in any situation - from workplace conflict to family drama to personal setbacks.</p>
+                            <button class="exercise-button ripple-effect" onclick="showMasterySummary()">I'm Ready to Practice</button>
+                        </div>
+                        
+                        <div id="masterySummary" style="display: none; margin-top: 3rem; padding: 2rem; background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); border-radius: 15px;">
+                            <h3 style="color: #2c3e50; text-align: center; margin-bottom: 2rem;">Your Wisdom Toolkit</h3>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+                                <div style="text-align: center;">
+                                    <div style="font-size: 2rem;">👂</div>
+                                    <strong>When confused:</strong><br>Listen first
+                                </div>
+                                <div style="text-align: center;">
+                                    <div style="font-size: 2rem;">🌊</div>
+                                    <strong>When controlling:</strong><br>Let them
+                                </div>
+                                <div style="text-align: center;">
+                                    <div style="font-size: 2rem;">🗝️</div>
+                                    <strong>When powerless:</strong><br>Let me
+                                </div>
+                            </div>
+                            <p style="text-align: center; margin-top: 2rem; font-style: italic; color: #555;">
+                                The path to wisdom isn't about having all the answers. It's about asking better questions, listening more deeply, and knowing where to focus your energy.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global state for counters
+        let letThemCount = 0;
+        let letMeCount = 0;
+        
+        // This is a global object that mimics the local storage for persistence within the iframe.
+        // It's used to store and retrieve data like a user's progress.
+        const fakeLocalStorage = {};
+
+        // Helper function to show a custom message box instead of alert()
+        function showMessage(message, duration = 3000) {
+            const messageBox = document.getElementById('messageBox');
+            const messageText = document.getElementById('messageText');
+            messageText.textContent = message;
+            messageBox.style.display = 'block';
+            
+            // Allow the user to click to close the box immediately
+            messageBox.onclick = () => {
+                messageBox.style.display = 'none';
+                clearTimeout(timeoutId);
+            };
+            
+            // Automatically hide the message box after a set duration
+            const timeoutId = setTimeout(() => {
+                messageBox.style.display = 'none';
+            }, duration);
+        }
+
+        // Object containing all the scenarios and their wisdom
+        const listeningScenarios = {
+            overwhelmed: {
+                title: "Overwhelmed Friend",
+                situation: "They're drowning in responsibilities and stress",
+                listen: "What specifically is overwhelming them? What support do they need vs. what they're asking for? Are they venting or problem-solving?",
+                letThem: "Let them feel overwhelmed without trying to minimize it. Let them find their own solutions. Let them process emotions without rushing to fix.",
+                letMe: "Let me offer specific help, not generic advice. Let me validate their feelings. Let me ask what would actually help right now.",
+                wisdom: "Sometimes people need to be heard before they can hear solutions. Your presence can be more powerful than your problem-solving."
+            },
+            criticism: {
+                title: "Receiving Criticism",
+                situation: "Someone is pointing out your mistakes or shortcomings",
+                listen: "What's the actual feedback beneath the emotion? What's valid vs. what's their frustration? What can you learn?",
+                letThem: "Let them express their concerns fully. Let them have their emotions about the situation. Let them finish before defending.",
+                letMe: "Let me separate valid feedback from personal attacks. Let me respond thoughtfully, not reactively. Let me own what's true.",
+                wisdom: "The most valuable feedback often comes wrapped in the most uncomfortable packaging. Listen past the delivery to the message."
+            },
+            venting: {
+                title: "Angry Venting Colleague",
+                situation: "They're furious about workplace unfairness",
+                listen: "What injustice do they feel? What outcome do they want? Are they seeking solutions or just needing to be heard?",
+                letThem: "Let them vent their anger fully. Let them feel their frustration without judgment. Let them decide their next steps.",
+                letMe: "Let me validate their feelings without agreeing to take action. Let me ask good questions. Let me maintain my boundaries.",
+                wisdom: "Anger often masks hurt or fear. Listen to what's underneath the rage - that's where real understanding lives."
+            },
+            relationship: {
+                title: "Relationship Conflict",
+                situation: "Your partner feels unheard and misunderstood",
+                listen: "What do they really need to feel heard? When did they start feeling disconnected? What's beneath their frustration?",
+                letThem: "Let them express how they've been feeling. Let them share their perspective without interrupting. Let them be vulnerable.",
+                letMe: "Let me truly understand before trying to explain myself. Let me acknowledge their experience. Let me change what needs changing.",
+                wisdom: "In relationships, being right matters less than being connected. Listen to understand, not to be understood first."
+            }
+        };
+
+        // Function to handle reflective listening
+        function generateReflectiveResponse() {
+            const input = document.getElementById('reflectiveInput').value.trim();
+            const response = document.getElementById('reflectiveResponse');
+            
+            if (!input) {
+                showMessage('Please enter something someone said to you.');
+                return;
+            }
+            
+            const reflectiveResponses = generateReflective(input);
+            
+            response.innerHTML = `
+                <h5 style="color: #7b1fa2; margin-bottom: 1rem;">Reflective Listening Responses:</h5>
+                <div style="margin: 1rem 0; padding: 1rem; background: #f3e5f5; border-radius: 8px;">
+                    <strong>Paraphrase:</strong> "${reflectiveResponses.paraphrase}"
+                </div>
+                <div style="margin: 1rem 0; padding: 1rem; background: #e8f5e8; border-radius: 8px;">
+                    <strong>Emotion Reflection:</strong> "${reflectiveResponses.emotion}"
+                </div>
+                <div style="margin: 1rem 0; padding: 1rem; background: #e3f2fd; border-radius: 8px;">
+                    <strong>Clarifying Question:</strong> "${reflectiveResponses.question}"
+                </div>
+            `;
+            response.style.display = 'block';
+        }
+
+        // Generates a reflective response based on input text
+        function generateReflective(text) {
+            const lowerText = text.toLowerCase();
+            
+            let emotion = "concerned";
+            let emotionIntensity = "feeling";
+            
+            if (lowerText.includes('angry') || lowerText.includes('mad') || lowerText.includes('furious')) {
+                emotion = "frustrated or angry";
+                emotionIntensity = "really feeling";
+            } else if (lowerText.includes('sad') || lowerText.includes('depressed') || lowerText.includes('down')) {
+                emotion = "sad or down";
+                emotionIntensity = "going through";
+            } else if (lowerText.includes('stressed') || lowerText.includes('overwhelmed') || lowerText.includes('pressure')) {
+                emotion = "overwhelmed or stressed";
+                emotionIntensity = "dealing with";
+            } else if (lowerText.includes('excited') || lowerText.includes('happy') || lowerText.includes('great')) {
+                emotion = "excited or positive";
+                emotionIntensity = "feeling";
+            }
+            
+            return {
+                paraphrase: `So what I'm hearing is that you're dealing with ${text.toLowerCase().slice(0, 50)}${text.length > 50 ? '...' : ''}. Is that right?`,
+                emotion: `It sounds like you're ${emotionIntensity} ${emotion} about this situation.`,
+                question: `What would be most helpful for you right now in dealing with this?`
+            };
+        }
+
+        // Handles displaying a scenario's wisdom
+        function showListeningScenario(type) {
+            const scenario = listeningScenarios[type];
+            const resultDiv = document.getElementById('listeningScenarioResult');
+            
+            resultDiv.innerHTML = `
+                <h4 style="color: #2c3e50; margin-bottom: 1rem;">${scenario.title}</h4>
+                <div style="background: #e3f2fd; padding: 1rem; border-radius: 8px; margin: 1rem 0; border-left: 4px solid #2196f3;">
+                    <strong>Situation:</strong> ${scenario.situation}
+                </div>
+                <div style="background: #fff3e0; padding: 1rem; border-radius: 8px; margin: 1rem 0; border-left: 4px solid #ff9800;">
+                    <strong>👂 LISTEN FOR:</strong> ${scenario.listen}
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0;">
+                    <div style="padding: 1rem; background: #ffebee; border-left: 4px solid #f44336; border-radius: 8px;">
+                        <strong style="color: #f44336;">LET THEM:</strong>
+                        <p style="margin-top: 0.5rem;">${scenario.letThem}</p>
+                    </div>
+                    <div style="padding: 1rem; background: #e8f5e8; border-left: 4px solid #4caf50; border-radius: 8px;">
+                        <strong style="color: #4caf50;">LET ME:</strong>
+                        <p style="margin-top: 0.5rem;">${scenario.letMe}</p>
+                    </div>
+                </div>
+                <div style="text-align: center; padding: 1rem; background: #f3e5f5; border-radius: 8px; font-style: italic; border-left: 4px solid #9c27b0;">
+                    <strong>💡 Listening Wisdom:</strong> ${scenario.wisdom}
+                </div>
+            `;
+            
+            resultDiv.style.display = 'block';
+            resultDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Generates personalized wisdom based on user's struggle
+        function generateWisdom() {
+            const struggle = document.getElementById('struggleInput').value;
+            if (!struggle.trim()) {
+                showMessage("Please describe your struggle first!");
+                return;
+            }
+            
+            const themes = analyzeStruggle(struggle.toLowerCase());
+            const customAdvice = generateCustomAdvice(themes);
+
+            const wisdomResponse = document.getElementById('wisdomResponse');
+            wisdomResponse.innerHTML = `
+                <div style="background: rgba(255, 255, 255, 0.9); padding: 2rem; border-radius: 15px; border-left: 5px solid #667eea;">
+                    <h4 style="color: #2c3e50; margin-bottom: 1rem;">🔄 Your Personal Transformation</h4>
+                    <div style="background: #ffe6e6; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                        <strong style="color: #ff6b6b;">LET THEM:</strong> ${customAdvice.letThem}
+                    </div>
+                    <div style="background: #e6f7f7; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                        <strong style="color: #4ecdc4;">LET ME:</strong> ${customAdvice.letMe}
+                    </div>
+                    <div style="margin-top: 1.5rem; padding: 1rem; background: #f8f9fa; border-radius: 8px; text-align: center;">
+                        <strong>${customAdvice.wisdom}</strong>
+                    </div>
+                </div>
+            `;
+            wisdomResponse.style.display = 'block';
+        }
+
+        // Helper to analyze user input for themes
+        function analyzeStruggle(text) {
+            const themes = { control: false, relationship: false, work: false, judgment: false, fear: false, anger: false };
+            if (text.includes('control') || text.includes('manage') || text.includes('fix')) themes.control = true;
+            if (text.includes('friend') || text.includes('partner') || text.includes('relationship')) themes.relationship = true;
+            if (text.includes('work') || text.includes('job') || text.includes('boss') || text.includes('coworker')) themes.work = true;
+            if (text.includes('judge') || text.includes('opinion') || text.includes('think')) themes.judgment = true;
+            if (text.includes('afraid') || text.includes('scared') || text.includes('fear') || text.includes('worry')) themes.fear = true;
+            if (text.includes('angry') || text.includes('mad') || text.includes('frustrated')) themes.anger = true;
+            return themes;
+        }
+
+        // Helper to generate personalized advice
+        function generateCustomAdvice(themes) {
+            let letThem = "Let them be exactly who they are right now. ";
+            let letMe = "Let me focus on what I can actually influence. ";
+            let wisdom = "Your peace doesn't depend on controlling others—it depends on knowing yourself.";
+
+            if (themes.control) letThem += "Let them handle their own problems and make their own mistakes. ";
+            if (themes.relationship) letThem += "Let them show you who they are through their actions. ";
+            if (themes.work) letThem += "Let them handle their own responsibilities. ";
+            if (themes.judgment) letThem += "Let them have whatever opinions they want about your choices. ";
+            if (themes.fear) letThem += "Let them trigger your fears. ";
+            if (themes.anger) letThem += "Let them feel their anger without taking it on. ";
+
+            if (themes.control) letMe += "Let me step back from trying to manage what isn't mine to manage. ";
+            if (themes.relationship) letMe += "Let me communicate my needs clearly and choose what's best for me. ";
+            if (themes.work) letMe += "Let me focus on my work and maintain professional boundaries. ";
+            if (themes.judgment) letMe += "Let me live according to my values, not their expectations. ";
+            if (themes.fear) letMe += "Let me feel the fear and choose courage anyway. ";
+            if (themes.anger) letMe += "Let me respond thoughtfully instead of reacting to their frustration. ";
+
+            if (themes.relationship) wisdom = "Love doesn't mean controlling—it means accepting and choosing what's best for you.";
+            if (themes.work) wisdom = "You can't control the workplace culture, but you can control your contribution to it.";
+            if (themes.judgment) wisdom = "Other people's opinions of you are none of your business—your integrity is.";
+            if (themes.fear) wisdom = "Fear is just excitement without breath. Breathe deep and step forward.";
+            if (themes.anger) wisdom = "Their anger is their burden, not yours. Let it go and find your peace.";
+
+            return { letThem: letThem.trim(), letMe: letMe.trim(), wisdom };
+        }
+
+        // Reframing wisdom for "The Neutral Observer" section
+        function generateReframingWisdom() {
+            const input = document.getElementById('controlInput').value.trim();
+            if (!input) {
+                showMessage("Please describe a situation first!");
+                return;
+            }
+
+            const reframing = reframeControlInput(input.toLowerCase());
+            const reframeResponse = document.getElementById('reframeResponse');
+            
+            reframeResponse.innerHTML = `
+                <div style="background: rgba(255, 255, 255, 0.9); padding: 2rem; border-radius: 15px; border-left: 5px solid #ff6b6b;">
+                    <h4 style="color: #2c3e50; margin-bottom: 1rem;">The Observer's Perspective</h4>
+                    <p style="margin-bottom: 1rem;">You hear their **attempt to influence** you.</p>
+                    <p style="margin-bottom: 1rem;">This is a moment to apply the wisdom:</p>
+                    <div style="padding: 1rem; background: #ffe6e6; border-left: 4px solid #ff6b6b; border-radius: 8px; margin: 1rem 0;">
+                        <strong style="color: #ff6b6b;">LET THEM:</strong> ${reframing.letThem}
+                    </div>
+                    <div style="padding: 1rem; background: #e6f7f7; border-left: 4px solid #4ecdc4; border-radius: 8px; margin: 1rem 0;">
+                        <strong style="color: #4ecdc4;">LET ME:</strong> ${reframing.letMe}
+                    </div>
+                </div>
+            `;
+            reframeResponse.style.display = 'block';
+        }
+
+        // Helper to reframe accusatory language into neutral observation
+        function reframeControlInput(text) {
+            let letThem = "";
+            let letMe = "Let me choose my response to this.";
+
+            if (text.includes("advice")) {
+                letThem = "Let them offer their advice. It comes from their own map of the world.";
+                letMe += " Let me decide what, if any, part of their advice is useful for me.";
+            } else if (text.includes("micromanaging")) {
+                letThem = "Let them feel the need to micromanage. This is a reflection of their own anxiety, not your capability.";
+                letMe += " Let me maintain my professional integrity and focus on the task at hand.";
+            } else {
+                letThem = "Let their attempt to control you be a signal that they may be feeling insecure or afraid.";
+                letMe += " Let me step back and observe the situation without reacting personally.";
+            }
+
+            return { letThem, letMe };
+        }
+
+        // Updates the counters and shows a message
+        function incrementLetThem() {
+            letThemCount++;
+            document.getElementById('letThemCount').textContent = letThemCount;
+            showMessage(`Great! You've chosen to let go. Current count: ${letThemCount}`);
+        }
+
+        function incrementLetMe() {
+            letMeCount++;
+            document.getElementById('letMeCount').textContent = letMeCount;
+            showMessage(`Awesome! You've taken ownership. Current count: ${letMeCount}`);
+        }
+
+        // Scrolls to the main content section
+        function scrollToContent() {
+            document.querySelector('.content').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Shows the final mastery summary section
+        function showMasterySummary() {
+            document.getElementById('masterySummary').style.display = 'block';
+            document.getElementById('masterySummary').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Intersection Observer for animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Progress bar
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.pageYOffset;
+            const documentHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = (scrollTop / documentHeight) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        });
+
+        // Floating elements animation with random delays
+        document.querySelectorAll('.floating-element').forEach((element) => {
+            element.style.animationDelay = `${Math.random() * 3}s`;
+            element.style.animationDuration = `${6 + Math.random() * 4}s`;
+        });
+        
+        // Register the service worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('./index.html').then(function(registration) {
+                    // Registration was successful
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                }, function(err) {
+                    // registration failed :(
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
+    </script>
+    <!-- The service worker script itself is embedded here within the HTML -->
+    <script id="service-worker-script">
+        self.addEventListener('install', (event) => {
+            event.waitUntil(
+                caches.open('let-life-flow-cache-v1').then((cache) => {
+                    return cache.addAll([
+                        './index.html',
+                        './'
+                    ]);
+                })
+            );
+        });
+
+        self.addEventListener('fetch', (event) => {
+            event.respondWith(
+                caches.match(event.request).then((response) => {
+                    return response || fetch(event.request);
+                })
+            );
+        });
+    </script>
 </body>
 </html>
