@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phase 4: Full Bloom Partnership</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .scene {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .scene.active {
+            opacity: 1;
+        }
+
+        .flower-garden {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .flower {
+            position: absolute;
+            font-size: 60px;
+            animation: bloom 2s ease-out;
+            transform-origin: bottom center;
+        }
+
+        .flower.main {
+            font-size: 120px;
+            z-index: 10;
+        }
+
+        .flower.small {
+            font-size: 40px;
+            opacity: 0.7;
+        }
+
+        @keyframes bloom {
+            0% { transform: scale(0) rotate(0deg); opacity: 0; }
+            50% { transform: scale(1.2) rotate(10deg); opacity: 1; }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+
+        .partnership-visual {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            gap: 100px;
+        }
+
+        .person {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            animation: gentle-pulse 3s ease-in-out infinite;
+            position: relative;
+        }
+
+        .person::before {
+            content: '';
+            position: absolute;
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            animation: ripple 2s ease-out infinite;
+        }
+
+        @keyframes gentle-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes ripple {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+
+        .connection-line {
+            position: absolute;
+            width: 200px;
+            height: 4px;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1);
+            border-radius: 2px;
+            animation: flow 2s ease-in-out infinite;
+        }
+
+        @keyframes flow {
+            0%, 100% { transform: scaleX(1); opacity: 0.7; }
+            50% { transform: scaleX(1.1); opacity: 1; }
+        }
+
+        .heart {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 80px;
+            color: #ff6b6b;
+            animation: heart-beat 2s ease-in-out infinite;
+        }
+
+        @keyframes heart-beat {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.2); }
+        }
+
+        .garden-metaphor {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .tree {
+            font-size: 150px;
+            animation: tree-grow 3s ease-out;
+            margin-bottom: 20px;
+        }
+
+        @keyframes tree-grow {
+            0% { transform: scaleY(0.1); opacity: 0; }
+            100% { transform: scaleY(1); opacity: 1; }
+        }
+
+        .roots {
+            position: absolute;
+            bottom: 40%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 40px;
+            color: #8b4513;
+            animation: roots-spread 2s ease-out 1s both;
+        }
+
+        @keyframes roots-spread {
+            0% { transform: translateX(-50%) scaleX(0); opacity: 0; }
+            100% { transform: translateX(-50%) scaleX(1); opacity: 1; }
+        }
+
+        .growth-text {
+            position: absolute;
+            bottom: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 24px;
+            text-align: center;
+            animation: fade-in 1s ease-in 3s both;
+        }
+
+        @keyframes fade-in {
+            0% { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            100% { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+
+        .synergy-visual {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .spiral {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: spiral-rotate 4s linear infinite;
+        }
+
+        .spiral:nth-child(2) {
+            width: 200px;
+            height: 200px;
+            animation-duration: 3s;
+            animation-direction: reverse;
+        }
+
+        .spiral:nth-child(3) {
+            width: 100px;
+            height: 100px;
+            animation-duration: 2s;
+        }
+
+        @keyframes spiral-rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .infinity {
+            position: absolute;
+            font-size: 80px;
+            color: white;
+            opacity: 0.9;
+            animation: infinity-glow 2s ease-in-out infinite;
+        }
+
+        @keyframes infinity-glow {
+            0%, 100% { text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
+            50% { text-shadow: 0 0 20px rgba(255, 255, 255, 0.8); }
+        }
+
+        .progress-bar {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1);
+            border-radius: 2px;
+            animation: progress 70s linear;
+        }
+
+        @keyframes progress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .floating-element {
+            position: absolute;
+            font-size: 20px;
+            opacity: 0.6;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="video-container">
+        <!-- Scene 1: Full Bloom Flowers -->
+        <div class="scene active" id="scene1">
+            <div class="flower-garden">
+                <div class="flower main" style="top: 40%; left: 50%;">🌺</div>
+                <div class="flower small" style="top: 30%; left: 40%;">🌸</div>
+                <div class="flower small" style="top: 35%; left: 60%;">🌼</div>
+                <div class="flower small" style="top: 50%; left: 35%;">🌻</div>
+                <div class="flower small" style="top: 45%; left: 65%;">🌷</div>
+            </div>
+        </div>
+
+        <!-- Scene 2: Partnership Connection -->
+        <div class="scene" id="scene2">
+            <div class="partnership-visual">
+                <div class="person">👥</div>
+                <div class="connection-line"></div>
+                <div class="heart">💕</div>
+            </div>
+        </div>
+
+        <!-- Scene 3: Vulnerability & Trust -->
+        <div class="scene" id="scene3">
+            <div class="partnership-visual">
+                <div class="person">🤝</div>
+                <div class="connection-line"></div>
+                <div class="person">🤗</div>
+            </div>
+        </div>
+
+        <!-- Scene 4: Garden Growth -->
+        <div class="scene" id="scene4">
+            <div class="garden-metaphor">
+                <div class="tree">🌳</div>
+                <div class="roots">🌱🌱🌱</div>
+                <div class="growth-text">Ongoing Nurturing</div>
+            </div>
+        </div>
+
+        <!-- Scene 5: Synergy -->
+        <div class="scene" id="scene5">
+            <div class="synergy-visual">
+                <div class="spiral"></div>
+                <div class="spiral"></div>
+                <div class="spiral"></div>
+                <div class="infinity">∞</div>
+            </div>
+        </div>
+
+        <!-- Floating Elements -->
+        <div class="floating-elements">
+            <div class="floating-element" style="top: 20%; left: 20%; animation-delay: 0s;">✨</div>
+            <div class="floating-element" style="top: 30%; left: 80%; animation-delay: 1s;">💫</div>
+            <div class="floating-element" style="top: 70%; left: 15%; animation-delay: 2s;">🌟</div>
+            <div class="floating-element" style="top: 60%; left: 85%; animation-delay: 3s;">⭐</div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+    </div>
+
+    <script>
+        // Scene transition timing to match voiceover segments
+        const scenes = [
+            { id: 'scene1', duration: 12000 }, // "Full bloom partnership" - 12 seconds
+            { id: 'scene2', duration: 14000 }, // "Emotional reconnection" - 14 seconds
+            { id: 'scene3', duration: 12000 }, // "Vulnerability builds trust" - 12 seconds
+            { id: 'scene4', duration: 16000 }, // "Garden metaphor" - 16 seconds
+            { id: 'scene5', duration: 16000 }  // "Synergy and growth" - 16 seconds
+        ];
+
+        let currentSceneIndex = 0;
+        let timeElapsed = 0;
+
+        function showScene(index) {
+            // Hide all scenes
+            document.querySelectorAll('.scene').forEach(scene => {
+                scene.classList.remove('active');
+            });
+            
+            // Show current scene
+            if (index < scenes.length) {
+                document.getElementById(scenes[index].id).classList.add('active');
+            }
+        }
+
+        function startVideoSequence() {
+            let totalTime = 0;
+            
+            scenes.forEach((scene, index) => {
+                setTimeout(() => {
+                    showScene(index);
+                }, totalTime);
+                
+                totalTime += scene.duration;
+            });
+        }
+
+        // Start the sequence
+        startVideoSequence();
+
+        // Restart button functionality (for testing)
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'r' || e.key === 'R') {
+                currentSceneIndex = 0;
+                startVideoSequence();
+            }
+        });
+    </script>
+</body>
+</html>

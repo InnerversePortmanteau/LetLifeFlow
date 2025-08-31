@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relationship Dynamics & Needs Assessment</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            color: #4a5568;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            color: #718096;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .intro {
+            background: linear-gradient(135deg, #e6f3ff 0%, #f0e6ff 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            border-left: 5px solid #667eea;
+        }
+
+        .intro h2 {
+            color: #4a5568;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .intro p {
+            line-height: 1.7;
+            color: #2d3748;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .section h3 {
+            color: #4a5568;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-icon {
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .question {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .question h4 {
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            line-height: 1.5;
+        }
+
+        .question textarea {
+            width: 100%;
+            min-height: 80px;
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: inherit;
+            resize: vertical;
+            transition: border-color 0.3s ease;
+        }
+
+        .question textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .rating-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .rating-item {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .rating-item h4 {
+            color: #2d3748;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+
+        .rating-item p {
+            color: #718096;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .rating-scale {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .rating-option {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 12px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .rating-option:hover {
+            background: rgba(102, 126, 234, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .rating-option input[type="radio"] {
+            margin: 0;
+        }
+
+        .rating-option.selected {
+            background: #667eea;
+            color: white;
+        }
+
+        .comment-area {
+            margin-top: 10px;
+        }
+
+        .comment-area textarea {
+            width: 100%;
+            min-height: 60px;
+            padding: 10px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            resize: vertical;
+            transition: border-color 0.3s ease;
+        }
+
+        .comment-area textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .export-section {
+            margin-top: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .export-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px;
+        }
+
+        .export-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 3px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .rating-scale {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .rating-option {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Relationship Dynamics & Needs Assessment</h1>
+            <p>A tool for exploring shared experiences and understanding underlying needs without judgment</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="intro">
+            <h2>Setting the Stage</h2>
+            <p>This assessment focuses on dynamics and unmet needs rather than individual judgments. The goal is to create a safe space for open feedback, making our shared experience the object of attention and work. This isn't about assigning blame, but about genuinely understanding what might be contributing to feelings of "stuckness" and what we might collectively need to move forward.</p>
+        </div>
+
+        <div class="section">
+            <h3><span class="section-icon">1</span>Reflective Questions on Current Dynamics</h3>
+            <p style="margin-bottom: 20px; color: #718096;">These open-ended questions encourage reflection on shared experience and underlying needs.</p>
+            
+            <div class="question">
+                <h4>When you think about our current situation, what specific aspects feel most stuck or unchangeable?</h4>
+                <textarea placeholder="Share your thoughts on what feels most challenging to change or move forward..."></textarea>
+            </div>
+
+            <div class="question">
+                <h4>If we could wave a magic wand, what's one area where you'd most want to see things move forward or shift?</h4>
+                <textarea placeholder="Describe what positive change would look like to you..."></textarea>
+            </div>
+
+            <div class="question">
+                <h4>What emotions or frustrations come up for you when you feel this sense of being "stuck"?</h4>
+                <textarea placeholder="Describe the feelings that arise when things feel stagnant..."></textarea>
+            </div>
+
+            <div class="question">
+                <h4>What do you believe might be missing or unaddressed that contributes to this feeling of inertia?</h4>
+                <textarea placeholder="Think about needs like safety, understanding, control, recognition, connection, personal space, etc..."></textarea>
+            </div>
+
+            <div class="question">
+                <h4>If we were able to address those missing pieces, what do you imagine would be different?</h4>
+                <textarea placeholder="Envision how things might change if those needs were met..."></textarea>
+            </div>
+
+            <div class="question">
+                <h4>What's one small step you think we could take to start identifying or meeting an important need that's currently unmet?</h4>
+                <textarea placeholder="Suggest a concrete, manageable first step..."></textarea>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3><span class="section-icon">2</span>Needs-Focused Assessment</h3>
+            <p style="margin-bottom: 20px; color: #718096;">Rate how well these fundamental needs are being met in our current dynamic (1 = not met at all, 5 = fully met).</p>
+            
+            <div class="rating-container">
+                <div class="rating-item">
+                    <h4>Sense of Security/Safety (emotional or practical)</h4>
+                    <p>Do you feel a stable foundation, knowing what to expect, and that your well-being is considered?</p>
+                    <div class="rating-scale">
+                        <label class="rating-option">
+                            <input type="radio" name="security" value="1"> 1 - Not at all
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="security" value="2"> 2 - Rarely
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="security" value="3"> 3 - Sometimes
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="security" value="4"> 4 - Often
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="security" value="5"> 5 - Fully
+                        </label>
+                    </div>
+                    <div class="comment-area">
+                        <textarea placeholder="Comments/Examples about security and safety..."></textarea>
+                    </div>
+                </div>
+
+                <div class="rating-item">
+                    <h4>Understanding/Being Heard</h4>
+                    <p>Do you feel that your perspective is genuinely listened to and understood, even if there's disagreement?</p>
+                    <div class="rating-scale">
+                        <label class="rating-option">
+                            <input type="radio" name="understanding" value="1"> 1 - Not at all
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="understanding" value="2"> 2 - Rarely
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="understanding" value="3"> 3 - Sometimes
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="understanding" value="4"> 4 - Often
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="understanding" value="5"> 5 - Fully
+                        </label>
+                    </div>
+                    <div class="comment-area">
+                        <textarea placeholder="Comments/Examples about feeling understood..."></textarea>
+                    </div>
+                </div>
+
+                <div class="rating-item">
+                    <h4>Autonomy/Control</h4>
+                    <p>Do you feel you have appropriate agency or influence over decisions that affect you?</p>
+                    <div class="rating-scale">
+                        <label class="rating-option">
+                            <input type="radio" name="autonomy" value="1"> 1 - Not at all
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="autonomy" value="2"> 2 - Rarely
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="autonomy" value="3"> 3 - Sometimes
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="autonomy" value="4"> 4 - Often
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="autonomy" value="5"> 5 - Fully
+                        </label>
+                    </div>
+                    <div class="comment-area">
+                        <textarea placeholder="Comments/Examples about autonomy and control..."></textarea>
+                    </div>
+                </div>
+
+                <div class="rating-item">
+                    <h4>Connection/Belonging</h4>
+                    <p>Do you feel connected and that you belong, with shared purpose or support?</p>
+                    <div class="rating-scale">
+                        <label class="rating-option">
+                            <input type="radio" name="connection" value="1"> 1 - Not at all
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="connection" value="2"> 2 - Rarely
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="connection" value="3"> 3 - Sometimes
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="connection" value="4"> 4 - Often
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="connection" value="5"> 5 - Fully
+                        </label>
+                    </div>
+                    <div class="comment-area">
+                        <textarea placeholder="Comments/Examples about connection and belonging..."></textarea>
+                    </div>
+                </div>
+
+                <div class="rating-item">
+                    <h4>Recognition/Appreciation</h4>
+                    <p>Do you feel your contributions, efforts, or presence are seen and valued?</p>
+                    <div class="rating-scale">
+                        <label class="rating-option">
+                            <input type="radio" name="recognition" value="1"> 1 - Not at all
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="recognition" value="2"> 2 - Rarely
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="recognition" value="3"> 3 - Sometimes
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="recognition" value="4"> 4 - Often
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="recognition" value="5"> 5 - Fully
+                        </label>
+                    </div>
+                    <div class="comment-area">
+                        <textarea placeholder="Comments/Examples about recognition and appreciation..."></textarea>
+                    </div>
+                </div>
+
+                <div class="rating-item">
+                    <h4>Clarity/Direction</h4>
+                    <p>Do you feel there's a clear understanding of goals, roles, or expectations?</p>
+                    <div class="rating-scale">
+                        <label class="rating-option">
+                            <input type="radio" name="clarity" value="1"> 1 - Not at all
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="clarity" value="2"> 2 - Rarely
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="clarity" value="3"> 3 - Sometimes
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="clarity" value="4"> 4 - Often
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="clarity" value="5"> 5 - Fully
+                        </label>
+                    </div>
+                    <div class="comment-area">
+                        <textarea placeholder="Comments/Examples about clarity and direction..."></textarea>
+                    </div>
+                </div>
+
+                <div class="rating-item">
+                    <h4>Support/Help</h4>
+                    <p>Do you feel adequate support is available when needed?</p>
+                    <div class="rating-scale">
+                        <label class="rating-option">
+                            <input type="radio" name="support" value="1"> 1 - Not at all
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="support" value="2"> 2 - Rarely
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="support" value="3"> 3 - Sometimes
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="support" value="4"> 4 - Often
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="support" value="5"> 5 - Fully
+                        </label>
+                    </div>
+                    <div class="comment-area">
+                        <textarea placeholder="Comments/Examples about support and help..."></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3><span class="section-icon">3</span>Key Insights</h3>
+            
+            <div class="question">
+                <h4>Overall, what's one key need that, if better met, do you think 

@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proactive Communication Flow</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .flow-diagram {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            margin-bottom: 2rem;
+        }
+
+        .phase-section {
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #2d3748;
+            text-align: center;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .flow-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .flow-item {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            max-width: 300px;
+            border: 3px solid transparent;
+        }
+
+        .flow-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+
+        .flow-item.phase {
+            border-color: #00796b;
+            background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%);
+        }
+
+        .flow-item.decision {
+            border-color: #e65100;
+            background: linear-gradient(135deg, #fff3e0 0%, #ffcc80 100%);
+        }
+
+        .flow-item.outcome {
+            border-color: #33691e;
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+        }
+
+        .flow-item.loop {
+            border-color: #ad1457;
+            background: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 100%);
+        }
+
+        .flow-item h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #2d3748;
+        }
+
+        .flow-item p {
+            font-size: 0.9rem;
+            color: #4a5568;
+            margin-bottom: 0.5rem;
+        }
+
+        .flow-item .subtitle {
+            font-style: italic;
+            color: #666;
+            font-size: 0.8rem;
+        }
+
+        .arrow {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 1rem 0;
+        }
+
+        .arrow::after {
+            content: "→";
+            font-size: 2rem;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .connection-line {
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            margin: 1rem 0;
+            border-radius: 2px;
+            position: relative;
+        }
+
+        .connection-line::after {
+            content: "";
+            position: absolute;
+            right: -8px;
+            top: -6px;
+            width: 0;
+            height: 0;
+            border-left: 10px solid #764ba2;
+            border-top: 7px solid transparent;
+            border-bottom: 7px solid transparent;
+        }
+
+        .notes-section {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .notes-section h2 {
+            color: #2d3748;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .principle {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-left: 4px solid #667eea;
+        }
+
+        .principle strong {
+            color: #2d3748;
+        }
+
+        .interactive-toggle {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .interactive-toggle:hover {
+            background: #764ba2;
+            transform: scale(1.05);
+        }
+
+        .flow-path {
+            position: relative;
+            margin: 2rem 0;
+        }
+
+        .flow-path::before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+            transform: translateX(-50%);
+            z-index: 1;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .flow-diagram {
+                padding: 1.5rem;
+            }
+            
+            .flow-container {
+                flex-direction: column;
+            }
+            
+            .flow-item {
+                max-width: 100%;
+            }
+        }
+
+        .animate-pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .highlight-active {
+            animation: highlight 1s ease-in-out;
+        }
+
+        @keyframes highlight {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Proactive Communication Flow</h1>
+            <p>A mindful approach to connection based on mutual respect, vulnerability, and choice</p>
+        </div>
+
+        <div class="flow-diagram">
+            <!-- Phase 1: Publisher Stance -->
+            <div class="phase-section">
+                <div class="section-title">My Proactive Choice (The "Publisher" Stance)</div>
+                <div class="flow-container">
+                    <div class="flow-item phase" data-step="1">
+                        <h3>1. Internal Awareness & OFNR Formulation</h3>
+                        <p class="subtitle">My Vulnerable Truth</p>
+                        <p>Beginning with honest self-reflection and formulating my Observation, Feelings, Needs, and Requests</p>
+                    </div>
+                    <div class="arrow"></div>
+                    <div class="flow-item decision" data-step="2">
+                        <h3>2. The Act of Offering</h3>
+                        <p class="subtitle">Invitation to Connect</p>
+                        <p>My Open Hand Offering - Publishing OFNR as an invitation without expectation</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="connection-line"></div>
+
+            <!-- Phase 2: Subscriber Choice -->
+            <div class="phase-section">
+                <div class="section-title">The Recipient's Agency (The "Subscriber" Choice)</div>
+                <div class="flow-container">
+                    <div class="flow-item decision" data-step="3">
+                        <h3>3. Space for Choice</h3>
+                        <p class="subtitle">To Engage or Not? No Pressure</p>
+                        <p>Honoring the recipient's complete autonomy to choose their level of engagement</p>
+                    </div>
+                    <div class="arrow"></div>
+                    <div class="flow-item phase" data-step="4">
+                        <h3>4. Empathetic Listening</h3>
+                        <p class="subtitle">Seeking Mutual Understanding</p>
+                        <p>If engagement is chosen, deep listening and genuine curiosity about their experience</p>
+                    </div>
+                    <div class="arrow"></div>
+                    <div class="flow-item outcome" data-step="5">
+                        <h3>5. Honoring Choice</h3>
+                        <p class="subtitle">Acceptance Without Expectation</p>
+                        <p>If no engagement is chosen, complete acceptance and respect for their decision</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="connection-line"></div>
+
+            <!-- Phase 3: Shared Journey -->
+            <div class="phase-section">
+                <div class="section-title">Shared Journey & Iteration</div>
+                <div class="flow-container">
+                    <div class="flow-item loop" data-step="6">
+                        <h3>6. Mutual Dialogue & Co-Creation</h3>
+                        <p class="subtitle">Shared Vulnerability & Exploration</p>
+                        <p>Collaborative journey of discovery, learning, and mutual support</p>
+                    </div>
+                    <div class="arrow"></div>
+                    <div class="flow-item phase" data-step="7">
+                        <h3>Continuous Growth</h3>
+                        <p class="subtitle">New Insights/Next Interaction</p>
+                        <p>The journey continues with new awareness, creating a sustainable cycle of connection</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="notes-section">
+            <h2>🌟 Key Principles</h2>
+            <div class="principle">
+                <strong>Shared Attention:</strong> This whole process is the object of our shared attention - we're all conscious participants in this communication model.
+            </div>
+            <div class="principle">
+                <strong>Autonomy First:</strong> No pressure, no expectation, no fixed outcome - every person has complete agency in their response.
+            </div>
+            <div class="principle">
+                <strong>Non-Hierarchical:</strong> Every participant has a seat at the table with equal power and agency to review and adapt this process.
+            </div>
+            <div class="principle">
+                <strong>Compassionate Understanding:</strong> Acknowledging that unmet needs drive behavior, not malice.
+            </div>
+            <div class="principle">
+                <strong>Harm Minimization:</strong> Through shared vulnerability and mutual respect, we create safer spaces for authentic connection.
+            </div>
+            <div class="principle">
+                <strong>Iterative Sustainability:</strong> This process evolves and adapts based on collective wisdom and experience.
+            </div>
+        </div>
+    </div>
+
+    <button class="interactive-toggle" onclick="toggleInteractive()">✨ Interactive Mode</button>
+
+    <script>
+        let interactiveMode = false;
+        let currentStep = 0;
+        const steps = document.querySelectorAll('[data-step]');
+
+        function toggleInteractive() {
+            interactiveMode = !interactiveMode;
+            const button = document.querySelector('.interactive-toggle');
+            
+            if (interactiveMode) {
+                button.textContent = '⏸️ Pause Flow';
+                button.style.background = '#e53e3e';
+                startInteractiveFlow();
+            } else {
+                button.textContent = '✨ Interactive Mode';
+                button.style.background = '#667eea';
+                stopInteractiveFlow();
+            }
+        }
+
+        function startInteractiveFlow() {
+            // Reset all steps
+            steps.forEach(step => {
+                step.classList.remove('highlight-active', 'animate-pulse');
+            });
+            
+            currentStep = 0;
+            highlightNextStep();
+        }
+
+        function highlightNextStep() {
+            if (!interactiveMode || currentStep >= steps.length) {
+                if (interactiveMode) {
+                    // Restart the flow
+                    currentStep = 0;
+                    setTimeout(highlightNextStep, 1000);
+                }
+                return;
+            }
+
+            // Remove previous highlights
+            steps.forEach(step => {
+                step.classList.remove('highlight-active', 'animate-pulse');
+            });
+
+            // Highlight current step
+            const currentElement = steps[currentStep];
+            currentElement.classList.add('highlight-active', 'animate-pulse');
+
+            // Move to next step
+            currentStep++;
+            setTimeout(highlightNextStep, 3000);
+        }
+
+        function stopInteractiveFlow() {
+            steps.forEach(step => {
+                step.classList.remove('highlight-active', 'animate-pulse');
+            });
+        }
+
+        // Add click handlers for individual steps
+        steps.forEach((step, index) => {
+            step.addEventListener('click', () => {
+                if (interactiveMode) {
+                    currentStep = index;
+                    highlightNextStep();
+                }
+            });
+        });
+
+        // Add subtle animations on load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.querySelectorAll('.flow-item').forEach((item, index) => {
+                    setTimeout(() => {
+                        item.style.opacity = '0';
+                        item.style.transform = 'translateY(20px)';
+                        item.style.transition = 'all 0.6s ease';
+                        
+                        setTimeout(() => {
+                            item.style.opacity = '1';
+                            item.style.transform = 'translateY(0)';
+                        }, 100);
+                    }, index * 150);
+                });
+            }, 500);
+        });
+    </script>
+</body>
+</html>

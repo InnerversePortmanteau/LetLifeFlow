@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Human-in-the-Loop: AI State Transitions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 1000px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #718096;
+            margin-bottom: 30px;
+            font-size: 1.2em;
+        }
+
+        .demo-section {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .state-diagram {
+            background: linear-gradient(135deg, #f7fafc, #edf2f7);
+            border-radius: 15px;
+            padding: 20px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .state {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #cbd5e0;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .state.active {
+            border-left-color: #667eea;
+            background: linear-gradient(135deg, #ebf8ff, #f0fff4);
+            transform: translateX(5px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);
+        }
+
+        .state h3 {
+            color: #2d3748;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+
+        .state p {
+            color: #4a5568;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+
+        .interactive-demo {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .ai-message, .user-input, .system-response {
+            margin: 15px 0;
+            padding: 15px;
+            border-radius: 10px;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .ai-message {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 20px 20px 5px 20px;
+        }
+
+        .user-input {
+            background: linear-gradient(135deg, #48bb78, #38b2ac);
+            color: white;
+            border-radius: 5px 20px 20px 20px;
+            margin-left: 20px;
+        }
+
+        .system-response {
+            background: linear-gradient(135deg, #ed8936, #f56565);
+            color: white;
+            border-radius: 15px;
+            border: 2px solid #fed7d7;
+        }
+
+        .input-group {
+            margin: 20px 0;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: border-color 0.3s ease;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1em;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #a0aec0, #718096);
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #fc8181, #f56565);
+            color: white;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .concept-explanation {
+            background: linear-gradient(135deg, #f7fafc, #edf2f7);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+        }
+
+        .concept-explanation h2 {
+            color: #2d3748;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .concept-explanation p {
+            color: #4a5568;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 3px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            width: 0;
+            transition: width 0.5s ease;
+        }
+
+        @media (max-width: 768px) {
+            .demo-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖➕🧠 Human-in-the-Loop</h1>
+        <p class="subtitle">Experience AI State Transitions in Real-Time</p>
+        
+        <div class="demo-section">
+            <div class="state-diagram">
+                <h2 style="margin-bottom: 20px; color: #2d3748;">State Machine</h2>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressBar"></div>
+                </div>
+                
+                <div class="state active" id="state1">
+                    <h3>🔍 State 1: AI Needs Information</h3>
+                    <p>The AI realizes it needs a flight number to complete its objective.</p>
+                </div>
+                
+                <div class="state" id="state2">
+                    <h3>💬 State 2: Human Input Required</h3>
+                    <p>The system prompts the human for the missing information.</p>
+                </div>
+                
+                <div class="state" id="state3">
+                    <h3>⚙️ State 3: AI Processes Input</h3>
+                    <p>The AI validates and processes the human's response.</p>
+                </div>
+                
+                <div class="state" id="state4">
+                    <h3>✈️ State 4: Task Completion</h3>
+                    <p>The AI uses the information to fetch flight status.</p>
+                </div>
+            </div>
+            
+            <div class="interactive-demo">
+                <h2 style="margin-bottom: 20px; color: #2d3748;">Interactive Demo</h2>
+                
+                <div id="demoContent">
+                    <div class="ai-message">
+                        🤖 <strong>AI System:</strong> I need to get flight status information, but I'm missing a crucial piece of data. Let me ask the human for help!
+                    </div>
+                    
+                    <div id="elicitationPhase" class="hidden">
+                        <div class="ai-message">
+                            <strong>Server asks:</strong> Please provide the flight number you want to check
+                        </div>
+                        
+                        <div class="input-group">
+                            <input type="text" id="flightInput" placeholder="Enter flight number (e.g., AA123, UA456)" maxlength="10">
+                        </div>
+                        
+                        <div class="button-group">
+                            <button class="btn-primary" onclick="acceptInput()">✅ Accept</button>
+                            <button class="btn-secondary" onclick="declineInput()">❌ Decline</button>
+                            <button class="btn-danger" onclick="cancelInput()">🚫 Cancel</button>
+                        </div>
+                    </div>
+                    
+                    <div id="processingPhase" class="hidden">
+                        <div class="user-input" id="userResponse"></div>
+                        <div class="ai-message">
+                            <strong>AI Processing...</strong> <span id="processingText">Validating your input...</span>
+                        </div>
+                    </div>
+                    
+                    <div id="resultPhase" class="hidden">
+                        <div class="system-response" id="finalResult"></div>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 20px;">
+                    <button class="btn-primary" onclick="startDemo()" id="startBtn">🚀 Start Demo</button>
+                    <button class="btn-secondary" onclick="resetDemo()" id="resetBtn" style="display: none;">🔄 Reset</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="concept-explanation">
+            <h2>🎯 What Makes This "Human-in-the-Loop"?</h2>
+            <p><strong>Objective-Driven Design:</strong> The AI has a clear goal (get flight status) but lacks necessary information to proceed autonomously.</p>
+            <p><strong>Dynamic State Transitions:</strong> The system moves between states based on human decisions, not just programmed sequences.</p>
+            <p><strong>Collaborative Intelligence:</strong> Neither the AI nor human can complete the task alone - they need each other's capabilities.</p>
+            <p><strong>Real-World Application:</strong> This pattern appears in chatbots, form filling, decision support systems, and many AI tools you use daily!</p>
+            
+            <div style="margin-top: 20px; padding: 20px; background: rgba(102, 126, 234, 0.1); border-radius: 10px;">
+                <h3 style="color: #667eea; margin-bottom: 10px;">🔍 Try This Experiment:</h3>
+                <p>Run the demo multiple times with different choices. Notice how the AI adapts its behavior based on your decisions. This flexibility is what makes human-in-the-loop systems so powerful!</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentState = 1;
+        const flightDatabase = {
+            'AA123': { route: 'New York → Los Angeles', departure: '14:30', arrival: '17:45', status: 'On Time' },
+            'UA456': { route: 'Chicago → Miami', departure: '09:15', arrival: '13:20', status: 'Delayed 30 min' },
+            'DL789': { route: 'Seattle → Boston', departure: '06:00', arrival: '14:30', status: 'Boarding' },
+            'SW111': { route: 'Dallas → Denver', departure: '11:20', arrival: '12:45', status: 'Departed' }
+        };
+
+        function updateProgress() {
+            const progressBar = document.getElementById('progressBar');
+            const percentage = (currentState / 4) * 100;
+            progressBar.style.width = percentage + '%';
+        }
+
+        function activateState(stateNum) {
+            // Deactivate all states
+            for (let i = 1; i <= 4; i++) {
+                document.getElementById(`state${i}`).classList.remove('active');
+            }
+            // Activate current state
+            document.getElementById(`state${stateNum}`).classList.add('active');
+            currentState = stateNum;
+            updateProgress();
+        }
+
+        function startDemo() {
+            document.getElementById('startBtn').style.display = 'none';
+            document.getElementById('resetBtn').style.display = 'inline-block';
+            
+            setTimeout(() => {
+                activateState(2);
+                document.getElementById('elicitationPhase').classList.remove('hidden');
+                document.getElementById('flightInput').focus();
+            }, 1000);
+        }
+
+        function acceptInput() {
+            const flightNumber = document.getElementById('flightInput').value.trim().toUpperCase();
+            
+            if (!flightNumber) {
+                alert('Please enter a flight number first!');
+                return;
+            }
+
+            document.getElementById('elicitationPhase').classList.add('hidden');
+            document.getElementById('processingPhase').classList.remove('hidden');
+            document.getElementById('userResponse').innerHTML = `<strong>You entered:</strong> ${flightNumber}`;
+            
+            activateState(3);
+            
+            setTimeout(() => {
+                const processingText = document.getElementById('processingText');
+                processingText.textContent = 'Checking flight database...';
+                
+                setTimeout(() => {
+                    activateState(4);
+                    document.getElementById('processingPhase').classList.add('hidden');
+                    document.getElementById('resultPhase').classList.remove('hidden');
+                    
+                    const flight = flightDatabase[flightNumber];
+                    let resultHTML;
+                    
+                    if (flight) {
+                        resultHTML = `
+                            <strong>✅ Flight Status Retrieved Successfully!</strong><br><br>
+                            <strong>Flight ${flightNumber}:</strong><br>
+                            • Route: ${flight.route}<br>
+                            • Departure: ${flight.departure}<br>
+                            • Arrival: ${flight.arrival}<br>
+                            • Status: ${flight.status}
+                        `;
+                    } else {
+                        resultHTML = `
+                            <strong>⚠️ Flight Not Found</strong><br><br>
+                            Flight ${flightNumber} not found in our demo database.<br>
+                            Try: AA123, UA456, DL789, or SW111
+                        `;
+                    }
+                    
+                    document.getElementById('finalResult').innerHTML = resultHTML;
+                }, 1500);
+            }, 1000);
+        }
+
+        function declineInput() {
+            document.getElementById('elicitationPhase').classList.add('hidden');
+            document.getElementById('processingPhase').classList.remove('hidden');
+            document.getElementById('userResponse').innerHTML = `<strong>You chose:</strong> Decline to provide input`;
+            
+            activateState(3);
+            
+            setTimeout(() => {
+                activateState(4);
+                document.getElementById('processingPhase').classList.add('hidden');
+                document.getElementById('resultPhase').classList.remove('hidden');
+                document.getElementById('finalResult').innerHTML = `
+                    <strong>❌ Task Cannot Be Completed</strong><br><br>
+                    The AI cannot proceed without the required information.<br>
+                    This demonstrates the importance of human input in the loop!
+                `;
+            }, 1500);
+        }
+
+        function cancelInput() {
+            document.getElementById('elicitationPhase').classList.add('hidden');
+            document.getElementById('processingPhase').classList.remove('hidden');
+            document.getElementById('userResponse').innerHTML = `<strong>You chose:</strong> Cancel operation`;
+            
+            activateState(3);
+            
+            setTimeout(() => {
+                activateState(4);
+                document.getElementById('processingPhase').classList.add('hidden');
+                document.getElementById('resultPhase').classList.remove('hidden');
+                document.getElementById('finalResult').innerHTML = `
+                    <strong>🚫 Operation Cancelled</strong><br><br>
+                    The human decided to exit the process.<br>
+                    The system gracefully handles this decision.
+                `;
+            }, 1500);
+        }
+
+        function resetDemo() {
+            currentState = 1;
+            activateState(1);
+            
+            document.getElementById('elicitationPhase').classList.add('hidden');
+            document.getElementById('processingPhase').classList.add('hidden');
+            document.getElementById('resultPhase').classList.add('hidden');
+            
+            document.getElementById('flightInput').value = '';
+            document.getElementById('startBtn').style.display = 'inline-block';
+            document.getElementById('resetBtn').style.display = 'none';
+        }
+
+        // Initialize
+        updateProgress();
+        
+        // Add enter key support for input
+        document.getElementById('flightInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                acceptInput();
+            }
+        });
+    </script>
+</body>
+</html>
