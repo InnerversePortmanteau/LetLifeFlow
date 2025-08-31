@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Third Way: Beyond Knowing vs Thinking</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4));
+            color: white;
+            position: relative;
+        }
+
+        .hero-content {
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .false-choice {
+            background: #ff6b6b;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 2rem;
+            animation: pulse 2s infinite;
+            text-decoration: none;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+
+        .content-section {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: #2c3e50;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 4px;
+            background: #667eea;
+            margin: 20px auto;
+            border-radius: 2px;
+        }
+
+        .dichotomy-container {
+            display: grid;
+            grid-template-columns: 1fr 80px 1fr;
+            gap: 40px;
+            align-items: center;
+            margin-bottom: 60px;
+        }
+
+        .path-card {
+            background: #f8f9fa;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .path-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .path-card h3 {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        .path-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .vs-divider {
+            text-align: center;
+            font-size: 3rem;
+            font-weight: bold;
+            color: #e74c3c;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .third-way-reveal {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .third-way-title {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            animation: slideInFromLeft 1s ease-out;
+        }
+
+        .symbiosis-diagram {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 60px 0;
+            gap: 40px;
+        }
+
+        .diagram-element {
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 50%;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .diagram-element:hover {
+            background: rgba(255,255,255,0.2);
+            transform: scale(1.1);
+        }
+
+        .connection-line {
+            width: 60px;
+            height: 4px;
+            background: white;
+            position: relative;
+            animation: pulse-line 2s infinite;
+        }
+
+        .principles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+            margin: 60px 0;
+        }
+
+        .principle-card {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            border-left: 5px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .principle-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .principle-number {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .interactive-example {
+            background: #f8f9fa;
+            padding: 60px 0;
+        }
+
+        .example-container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin: 40px 0;
+        }
+
+        .example-toggle {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .toggle-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-btn:hover, .toggle-btn.active {
+            background: #5a67d8;
+            transform: translateY(-2px);
+        }
+
+        .example-content {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .example-content.active {
+            display: block;
+        }
+
+        .intelligence-types {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 80px 0;
+        }
+
+        .intelligence-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        .intelligence-card {
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .intelligence-card:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-10px);
+        }
+
+        .traps-section {
+            background: #2c3e50;
+            color: white;
+            padding: 80px 0;
+        }
+
+        .trap-card {
+            background: rgba(231, 76, 60, 0.1);
+            border: 2px solid #e74c3c;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .trap-card:hover {
+            background: rgba(231, 76, 60, 0.2);
+            transform: translateX(10px);
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .cta-button {
+            background: white;
+            color: #667eea;
+            padding: 20px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-10px); }
+            60% { transform: translateX(-50%) translateY(-5px); }
+        }
+
+        @keyframes slideInFromLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes pulse-line {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .dichotomy-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .vs-divider {
+                order: 2;
+                font-size: 2rem;
+            }
+
+            .symbiosis-diagram {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .connection-line {
+                width: 4px;
+                height: 60px;
+                transform: rotate(90deg);
+            }
+
+            .example-toggle {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>The Third Way</h1>
+                <p class="hero-subtitle">Beyond the False Choice of Knowing vs. Thinking</p>
+                <div class="false-choice">BREAKING: Education's Greatest Myth Exposed!</div>
+                <p style="font-size: 1.1rem; margin-top: 2rem;">What if everything you thought about learning was wrong?</p>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <div style="font-size: 2rem;">↓</div>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div class="container">
+            <h2 class="section-title">The False Dichotomy</h2>
+            <p style="text-align: center; font-size: 1.2rem; margin-bottom: 60px; color: #666;">
+                For decades, education has been trapped in an either/or mindset...
+            </p>
+
+            <div class="dichotomy-container">
+                <div class="path-card">
+                    <div class="path-icon">🧠</div>
+                    <h3>Learn What to KNOW</h3>
+                    <p>Traditional schooling emphasizes memorizing facts, dates, formulas. Build a vast repository of information. Be a walking encyclopedia.</p>
+                    <div style="margin-top: 20px; padding: 15px; background: #e8f4f8; border-radius: 10px;">
+                        <strong>Result:</strong> Static knowledge without application
+                    </div>
+                </div>
+
+                <div class="vs-divider">VS</div>
+
+                <div class="path-card">
+                    <div class="path-icon">💭</div>
+                    <h3>Learn How to THINK</h3>
+                    <p>Focus on critical thinking, problem-solving, creativity. Emphasize the process over the answer. Adapt and think on your feet.</p>
+                    <div style="margin-top: 20px; padding: 15px; background: #fff2e8; border-radius: 10px;">
+                        <strong>Result:</strong> Thinking skills without foundation
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center; background: #ffebee; padding: 40px; border-radius: 15px; border-left: 5px solid #e74c3c;">
+                <h3 style="color: #c62828; margin-bottom: 20px;">⚠️ The Problem</h3>
+                <p style="font-size: 1.1rem; color: #666;">A student who only knows facts is a <strong>static encyclopedia</strong>.<br>
+                A student who can only think is a <strong>theoretical architect with no materials</strong>.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="third-way-reveal">
+        <div class="container">
+            <h2 class="third-way-title">Introducing: The Third Way</h2>
+            <p style="font-size: 1.3rem; margin-bottom: 40px;">A symbiotic approach where knowledge and thinking dance together</p>
+
+            <div class="symbiosis-diagram">
+                <div class="diagram-element" onclick="highlightElement(this, 'Knowledge is the FUEL for thought')">
+                    <div style="font-size: 3rem;">📚</div>
+                    <div>KNOWLEDGE</div>
+                </div>
+               
+                <div class="connection-line"></div>
+               
+                <div class="diagram-element" onclick="highlightElement(this, 'Thinking is the ENGINE that processes knowledge')">
+                    <div style="font-size: 3rem;">⚡</div>
+                    <div>THINKING</div>
+                </div>
+            </div>
+
+            <div id="symbiosis-message" style="font-size: 1.2rem; min-height: 60px; display: flex; align-items: center; justify-content: center; font-style: italic;">
+                Click the elements above to explore their relationship!
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div class="container">
+            <h2 class="section-title">The Three Core Principles</h2>
+
+            <div class="principles-grid">
+                <div class="principle-card">
+                    <div class="principle-number">1</div>
+                    <h3>Knowledge as Foundation</h3>
+                    <p>You can't think critically about something you know nothing about. Facts provide the raw data, context, and vocabulary necessary for meaningful thought.</p>
+                    <div style="margin-top: 20px; font-style: italic; color: #667eea;">
+                        "Knowledge is the fuel for thought"
+                    </div>
+                </div>
+
+                <div class="principle-card">
+                    <div class="principle-number">2</div>
+                    <h3>The Power of Questioning</h3>
+                    <p>Transform education from finding known answers to exploring unknown possibilities. Encourage students to become creators of knowledge, not just consumers.</p>
+                    <div style="margin-top: 20px; font-style: italic; color: #667eea;">
+                        "Looping for understanding creates continuous feedback"
+                    </div>
+                </div>
+
+                <div class="principle-card">
+                    <div class="principle-number">3</div>
+                    <h3>Holistic Intelligence</h3>
+                    <p>Nurture emotional, social, and multiple types of intelligence through collaborative learning, empathy, and active listening.</p>
+                    <div style="margin-top: 20px; font-style: italic; color: #667eea;">
+                        "Beyond academic - into the human aspect of learning"
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="interactive-example">
+        <div class="container">
+            <h2 class="section-title">See The Third Way in Action</h2>
+           
+            <div class="example-container">
+                <div class="example-toggle">
+                    <button class="toggle-btn active" onclick="showExample('wwii')">World War II Example</button>
+                    <button class="toggle-btn" onclick="showExample('math')">Mathematics Example</button>
+                    <button class="toggle-btn" onclick="showExample('science')">Science Example</button>
+                </div>
+
+                <div id="wwii" class="example-content active">
+                    <h3 style="color: #2c3e50; margin-bottom: 20px;">🎖️ World War II: Traditional vs Third Way</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                        <div>
+                            <h4 style="color: #e74c3c;">❌ Traditional Approach</h4>
+                            <p>Memorize dates: WWII lasted from 1939-1945. Pearl Harbor: Dec 7, 1941. D-Day: June 6, 1944.</p>
+                        </div>
+                        <div>
+                            <h4 style="color: #27ae60;">✅ Third Way Approach</h4>
+                            <p><strong>Challenge:</strong> "Debate the effectiveness of Operation Overlord."<br>
+                            <strong>Result:</strong> Students research historical context, understand motivations, construct logical arguments, and question strategic assumptions.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="math" class="example-content">
+                    <h3 style="color: #2c3e50; margin-bottom: 20px;">📐 Mathematics: Traditional vs Third Way</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                        <div>
+                            <h4 style="color: #e74c3c;">❌ Traditional Approach</h4>
+                            <p>Learn the formula: Area = length × width. Memorize and repeat.</p>
+                        </div>
+                        <div>
+                            <h4 style="color: #27ae60;">✅ Third Way Approach</h4>
+                            <p><strong>Challenge:</strong> "Find the most efficient way to tile your bedroom floor."<br>
+                            <strong>Result:</strong> Students apply the formula to real-world problems, consider cost, waste, and practical constraints.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="science" class="example-content">
+                    <h3 style="color: #2c3e50; margin-bottom: 20px;">🔬 Science: Traditional vs Third Way</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                        <div>
+                            <h4 style="color: #e74c3c;">❌ Traditional Approach</h4>
+                            <p>Memorize: "The mitochondria is the powerhouse of the cell."</p>
+                        </div>
+                        <div>
+                            <h4 style="color: #27ae60;">✅ Third Way Approach</h4>
+                            <p><strong>Challenge:</strong> "Why do athletes have more mitochondria? Design an experiment to test this."<br>
+                            <strong>Result:</strong> Students connect cellular biology to real-world applications, design experiments, and question underlying assumptions.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="intelligence-types">
+        <div class="container">
+            <h2 class="section-title" style="color: white;">Multiple Intelligences Nurtured</h2>
+            <p style="text-align: center; font-size: 1.2rem; margin-bottom: 40px;">The Third Way doesn't just develop academic intelligence...</p>
+
+            <div class="intelligence-grid">
+                <div class="intelligence-card">
+                    <div style="font-size: 3rem; margin-bottom: 15px;">🧮</div>
+                    <h4>Logical-Mathematical</h4>
+                    <p>Problem-solving and analytical thinking</p>
+                </div>
+                <div class="intelligence-card">
+                    <div style="font-size: 3rem; margin-bottom: 15px;">💬</div>
+                    <h4>Linguistic</h4>
+                    <p>Communication and expression</p>
+                </div>
+                <div class="intelligence-card">
+                    <div style="font-size: 3rem; margin-bottom: 15px;">❤️</div>
+                    <h4>Emotional</h4>
+                    <p>Understanding and managing emotions</p>
+                </div>
+                <div class="intelligence-card">
+                    <div style="font-size: 3rem; margin-bottom: 15px;">🤝</div>
+                    <h4>Social</h4>
+                    <p>Navigating relationships and collaboration</p>
+                </div>
+                <div class="intelligence-card">
+                    <div style="font-size: 3rem; margin-bottom: 15px;">🎨</div>
+                    <h4>Creative</h4>
+                    <p>Innovation and artistic expression</p>
+                </div>
+                <div class="intelligence-card">
+                    <div style="font-size: 3rem; margin-bottom: 15px;">🔍</div>
+                    <h4>Spatial</h4>
+                    <p>Visual-spatial reasoning</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section" style="background: #f8f9fa;">
+        <div class="container">
+            <h2 class="section-title">💫 The Safety to Be Heard</h2>
+            <div style="background: white; padding: 50px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); margin-bottom: 60px;">
+                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 15px; margin-bottom: 40px; font-style: italic; font-size: 1.1rem; line-height: 1.8;">
+                    "When someone keeps bringing up the same thing over and over again, it's usually not because they want to fight. It's because they're still waiting for it to matter... Their nervous system is asking: Will this finally be safe enough to land?"
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 40px;">
+                    <div>
+                        <h3 style="color: #e74c3c; margin-bottom: 20px;">❌ Traditional Response to Repetition</h3>
+                        <ul style="color: #666; line-height: 1.8;">
+                            <li>"Stop asking the same question"</li>
+                            <li>"You're not paying attention"</li>
+                            <li>"We already covered this"</li>
+                            <li>"You should know this by now"</li>
+                        </ul>
+                        <div style="background: #ffebee; padding: 20px; border-radius: 10px; margin-top: 20px;">
+                            <strong style="color: #c62828;">Result:</strong> Student's nervous system never feels safe. The need to understand goes underground but doesn't disappear.
+                        </div>
+                    </div>
+                   
+                    <div>
+                        <h3 style="color: #27ae60; margin-bottom: 20px;">✅ Third Way Response</h3>
+                        <ul style="color: #666; line-height: 1.8;">
+                            <li>"I hear that this is important to you"</li>
+                            <li>"Let's explore what's underneath this question"</li>
+                            <li>"What would help this feel more solid for you?"</li>
+                            <li>"Your confusion is valuable information"</li>
+                        </ul>
+                        <div style="background: #e8f5e8; padding: 20px; border-radius: 10px; margin-top: 20px;">
+                            <strong style="color: #2e7d2e;">Result:</strong> Creates psychological safety where real learning can finally "land."
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="color: #2c3e50; margin-bottom: 25px; text-align: center;">🔄 Looping for Understanding in Action</h3>
+                <div style="display: flex; justify-content: center; align-items: center; gap: 30px; flex-wrap: wrap;">
+                    <div style="background: #e3f2fd; padding: 25px; border-radius: 15px; text-align: center; flex: 1; min-width: 200px;">
+                        <div style="font-size: 2rem; margin-bottom: 10px;">👂</div>
+                        <strong>Active Listening</strong>
+                        <p style="margin-top: 10px; font-size: 0.9rem; color: #666;">Hearing the emotion beneath the repetition</p>
+                    </div>
+                    <div style="font-size: 2rem; color: #667eea;">→</div>
+                    <div style="background: #f3e5f5; padding: 25px; border-radius: 15px; text-align: center; flex: 1; min-width: 200px;">
+                        <div style="font-size: 2rem; margin-bottom: 10px;">❓</div>
+                        <strong>Clarifying Questions</strong>
+                        <p style="margin-top: 10px; font-size: 0.9rem; color: #666;">"What would help this make sense?"</p>
+                    </div>
+                    <div style="font-size: 2rem; color: #667eea;">→</div>
+                    <div style="background: #e8f5e8; padding: 25px; border-radius: 15px; text-align: center; flex: 1; min-width: 200px;">
+                        <div style="font-size: 2rem; margin-bottom: 10px;">🎯</div>
+                        <strong>Safe Landing</strong>
+                        <p style="margin-top: 10px; font-size: 0.9rem; color: #666;">Understanding finally feels secure</p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px; border-radius: 20px; text-align: center;">
+                <h3 style="margin-bottom: 20px; font-size: 1.5rem;">The Breakthrough Realization</h3>
+                <p style="font-size: 1.2rem; line-height: 1.7;">
+                    We mistake repetition for drama, but it's actually a nervous system asking for safety.
+                    <br><br>
+                    <strong>True educational repair isn't just saying "I explained it already."</strong>
+                    <br>
+                    <strong>It's showing through action that the cycle of confusion can finally end.</strong>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="traps-section">
+        <div class="container">
+            <h2 class="section-title" style="color: white;">⚠️ Educational Traps to Avoid</h2>
+            <p style="text-align: center; font-size: 1.2rem; margin-bottom: 60px;">These self-reinforcing patterns prevent symbiotic learning...</p>
+
+            <div class="trap-card">
+                <h3 style="color: #e74c3c; margin-bottom: 15px;">🎯 The Trap of Assumptions</h3>
+                <p>Basing decisions on unverified beliefs rather than facts or direct communication. This prevents genuine curiosity and empathy, leading to friction and misunderstanding.</p>
+            </div>
+
+            <div class="trap-card">
+                <h3 style="color: #e74c3c; margin-bottom: 15px;">🏆 Zero-Sum Mindset</h3>
+                <p>Believing that for one to gain, another must lose. This prevents collaborative, win-win solutions and creates unnecessary competition.</p>
+            </div>
+
+            <div class="trap-card">
+                <h3 style="color: #e74c3c; margin-bottom: 15px;">🚪 The Trap of Isolation</h3>
+                <p>Operating in silos without communication or collaboration. This prevents symbiotic states where different components work together.</p>
+            </div>
+
+            <div class="trap-card">
+                <h3 style="color: #e74c3c; margin-bottom: 15px;">⏰ Short-Term Focus</h3>
+                <p>Prioritizing immediate gratification over long-term health and sustainability. This ignores consequences and leads to entropy.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="container">
+            <h2 style="font-size: 2.5rem; margin-bottom: 30px;">Ready to Transform Education?</h2>
+            <p style="font-size: 1.3rem; margin-bottom: 40px;">The Third Way prepares students to be more than repositories of information or clever problem-solvers.</p>
+            <p style="font-size: 1.2rem; margin-bottom: 40px;">It creates <strong>agile, empathetic, lifelong learners</strong> who can navigate the world as it is and contribute to shaping what it can become.</p>
+           
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; margin: 60px 0;">
+                <div style="background: rgba(255,255,255,0.1); padding: 30px; border-radius: 15px; backdrop-filter: blur(10px);">
+                    <h3>🌱 For Educators</h3>
+                    <p>Transform your classroom into a symbiotic learning environment where knowledge and thinking flourish together.</p>
+                </div>
+                <div style="background: rgba(255,255,255,0.1); padding: 30px; border-radius: 15px; backdrop-filter: blur(10px);">
+                    <h3>👨‍👩‍👧‍👦 For Parents</h3>
+                    <p>Support your children's development across all types of intelligence, not just academic achievement.</p>
+                </div>
+                <div style="background: rgba(255,255,255,0.1); padding: 30px; border-radius: 15px; backdrop-filter: blur(10px);">
+                    <h3>🎓 For Learners</h3>
+                    <p>Become a creator of knowledge, not just a consumer. Develop the questioning skills that drive discovery.</p>
+                </div>
+            </div>
+
+            <a href="#" class="cta-button">Start Your Third Way Journey</a>
+        </div>
+    </section>
+
+    <script>
+        function highlightElement(element, message) {
+            // Reset all elements
+            document.querySelectorAll('.diagram-element').forEach(el => {
+                el.style.background = 'rgba(255,255,255,0.1)';
+            });
+           
+            // Highlight selected element
+            element.style.background = 'rgba(255,255,255,0.3)';
+           
+            // Update message
+            document.getElementById('symbiosis-message').innerHTML = `<strong>${message}</strong>`;
+           
+            // Add animation
+            element.style.animation = 'pulse 0.5s ease-in-out';
+            setTimeout(() => {
+                element.style.animation = '';
+            }, 500);
+        }
+
+        function showExample(exampleId) {
+            // Hide all examples
+            document.querySelectorAll('.example-content').forEach(el => {
+                el.classList.remove('active');
+            });
+           
+            // Remove active class from all buttons
+            document.querySelectorAll('.toggle-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+           
+            // Show selected example
+            document.getElementById(exampleId).classList.add('active');
+           
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+
+        // Add smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add intersection observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements for animation
+        document.querySelectorAll('.principle-card, .trap-card, .intelligence-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+
+        // Add hover effects for interactive elements
+        document.querySelectorAll('.path-card, .principle-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+           
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>
+
