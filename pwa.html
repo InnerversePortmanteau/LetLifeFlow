@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Let Life Flow: The Art of Surrender and Self-Ownership</title>
+    
+    <!-- PWA Manifest Integration -->
+    <link rel="manifest" id="manifestLink">
+    <script>
+        const manifest = {
+            "name": "Let Life Flow",
+            "short_name": "LetFlow",
+            "start_url": "./pwa.html",
+            "display": "standalone",
+            "background_color": "#ffffff",
+            "theme_color": "#667eea",
+            "description": "The Art of Surrender and Self-Ownership PWA",
+            "icons": [
+                {
+                    "src": "https://placehold.co/192x192/764ba2/ffffff?text=LF",
+                    "sizes": "192x192",
+                    "type": "image/png"
+                },
+                {
+                    "src": "https://placehold.co/512x512/764ba2/ffffff?text=LF",
+                    "sizes": "512x512",
+                    "type": "image/png"
+                }
+            ]
+        };
+        const manifestLink = document.getElementById('manifestLink');
+        const manifestBlob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+        manifestLink.href = URL.createObjectURL(manifestBlob);
+    </script>
+
+    <style>
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        /* ...rest of the CSS unchanged... */
+    </style>
+</head>
+<body>
+    <!-- ...entire body content from your index.html... -->
+</body>
+</html>
