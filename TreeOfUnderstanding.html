@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Tree of Understanding</title>
+    <!-- Tailwind CSS CDN for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- React and ReactDOM CDN imports -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <!-- Babel for JSX compilation in the browser -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body class="bg-gray-100 font-inter text-gray-800">
+    <!-- This is the root div where our React app will be rendered -->
+    <div id="root"></div>
+
+    <!-- Our React component code. Babel will compile this JSX. -->
+    <script type="text/babel">
+        const { useState } = React;
+
+        // Data for the tree nodes, now including narrative IDs for the main branches
+        const treeData = {
+          root: {
+            id: 'root',
+            label: 'Shared Human Experience & The Drive to Connect',
+            description: 'The fundamental wellspring of our need for understanding and connection, grounding all truths. This foundational pillar also represents the "Community" pillar, emphasizing attachment, identity, and solidarity, essential for human flourishing.',
+            color: 'bg-indigo-700',
+            textColor: 'text-white',
+            children: ['contextualized-truth', 'wisdom', 'meaning']
+          },
+          'contextualized-truth': {
+            id: 'contextualized-truth',
+            label: 'Contextualized Truth',
+            description: 'A proposition or understanding coherent through its narrative of origins, proponent intentions, and intended aims.',
+            color: 'bg-emerald-600', // Slightly darker green for more depth
+            textColor: 'text-white',
+            children: ['genesis', 'intentions', 'aims'],
+            narrativeId: 'narrative1' // Link to narrative
+          },
+          'genesis': {
+            id: 'genesis',
+            label: 'Genesis of Origins',
+            description: 'Understanding the "who, when, and how" a truth came into being.',
+            color: 'bg-emerald-300',
+            textColor: 'text-gray-800'
+          },
+          'intentions': {
+            id: 'intentions',
+            label: 'Intentions of Proponents',
+            description: 'Discerning the "why" behind a truth – its purpose and motivations.',
+            color: 'bg-emerald-300',
+            textColor: 'text-gray-800'
+          },
+          'aims': {
+            id: 'aims',
+            label: 'Aims to Fulfill',
+            description: 'Recognizing "what for" – the practical or theoretical goals a truth seeks to achieve.',
+            color: 'bg-emerald-300',
+            textColor: 'text-gray-800'
+          },
+          'wisdom': {
+            id: 'wisdom',
+            label: 'Wisdom (The Third Way)',
+            description: 'The capacity to effectively integrate, apply, and navigate Contextualized Truths for meaningful action and understanding. This aligns with "The Third Way" principle of synthesizing extremes (like state and market, or planning and agility) into a resilient, humane, and hopeful whole.',
+            color: 'bg-blue-600', // Slightly darker blue for more depth
+            textColor: 'text-white',
+            children: ['discerning', 'synthesizing', 'applying', 'evolving'],
+            narrativeId: 'narrative2' // Link to narrative
+          },
+          'discerning': {
+            id: 'discerning',
+            label: 'Discerning Intentions',
+            description: 'Recognizing biases and motivations within Contextualized Truths.',
+            color: 'bg-blue-300',
+            textColor: 'text-gray-800'
+          },
+          'synthesizing': {
+            id: 'synthesizing',
+            label: 'Synthesizing Multiple Truths',
+            description: 'Integrating seemingly contradictory truths into a comprehensive view.',
+            color: 'bg-blue-300',
+            textColor: 'text-gray-800'
+          },
+          'applying': {
+            id: 'applying',
+            label: 'Applying with Prudence',
+            description: 'Using truths to make sound judgments and guide effective behavior.',
+            color: 'bg-blue-300',
+            textColor: 'text-gray-800'
+          },
+          'evolving': {
+            id: 'evolving',
+            label: 'Evolving Understanding',
+            description: 'Openness to refining truths as contexts and narratives change.',
+            color: 'bg-blue-300',
+            textColor: 'text-gray-800'
+          },
+          'meaning': {
+            id: 'meaning',
+            label: 'Meaning',
+            description: 'The subjective and intersubjective resonance that arises when a Contextualized Truth aligns with, illuminates, or profoundly impacts one\'s understanding of self, purpose, or the world, often through the application of wisdom. This is where purpose and significance are found, aligning with the "Maps of Meaning" concept.',
+            color: 'bg-purple-600', // Slightly darker purple for more depth
+            textColor: 'text-white',
+            children: ['impact', 'personalization', 'purpose', 'coherence'],
+            narrativeId: 'narrative3' // Link to narrative
+          },
+          'impact': {
+            id: 'impact',
+            label: 'Impact of Truth',
+            description: 'How a truth resonates and affects an individual or group.',
+            color: 'bg-purple-300',
+            textColor: 'text-gray-800'
+          },
+          'personalization': {
+            id: 'personalization',
+            label: 'Personalization of Truth',
+            description: 'Transforming intellectual understanding into lived reality through experience.',
+            color: 'bg-purple-300',
+            textColor: 'text-gray-800'
+          },
+          'purpose': {
+            id: 'purpose',
+            label: 'Purpose & Significance',
+            description: 'Clarifying one\'s goals and finding significance through wise application of truths.',
+            color: 'bg-purple-300',
+            textColor: 'text-gray-800'
+          },
+          'coherence': {
+            id: 'coherence',
+            label: 'Coherence & Integration',
+            description: 'Integrating truths into a coherent personal narrative or worldview.',
+            color: 'bg-purple-300',
+            textColor: 'text-gray-800'
+          },
+        };
+
+        // Narrative Content as a JavaScript object for easy access
+        const narrativeContent = {
+          narrative1: {
+            title: 'The Community Garden Project',
+            subtitle: '(Contextualized Truth in Action)',
+            sections: [
+              {
+                heading: 'Setting',
+                content: 'A local community meeting discussing a new urban garden. Sarah, a new resident, proposes a strict schedule for watering and weeding. Mark, a long-time resident, immediately pushes back.',
+              },
+              {
+                heading: 'Initial Interaction (Assumption-Driven)',
+                content: `
+                  <ul>
+                    <li><strong>Sarah:</strong> "We need a very clear, rigid schedule for watering and weeding, or this garden will fail. I've seen it happen."</li>
+                    <li><strong>Mark:</strong> "That's ridiculous. Gardens need flow, not military precision. You'll kill the joy right out of it."</li>
+                    <li><strong>Sarah:</strong> "Joy doesn't grow vegetables, discipline does. Are you saying you don't care if the plants die?"</li>
+                    <li><strong>Mark:</strong> "I'm saying I've been gardening here for thirty years. I know what works, and it's not micromanaging every droplet!"</li>
+                  </ul>
+                  <p><strong>Analysis (Assumption):</strong> Mark assumes Sarah is a control freak; Sarah assumes Mark is lazy or resistant to structure. Neither understands the "truth" behind the other's proposal.</p>
+                `,
+              },
+              {
+                heading: 'Revised Interaction (Curiosity-Driven - Applying Contextualized Truth)',
+                content: `
+                  <ul>
+                    <li><strong>Sarah:</strong> "I'm really keen on this garden's success, and I'm suggesting a strict schedule for watering and weeding. In my previous neighborhood, our community garden struggled terribly because of inconsistent care, and eventually, most of the plants withered. I saw a lot of effort go to waste, and it was quite disheartening. So, my 'truth' is born from that past experience – a firm schedule ensures things get done."
+                      <ul><li><em>(Revealing Genesis, Intention, and Aim: Past failure led to a belief in strictness, aiming for success and avoiding disappointment.)</em></li></ul>
+                    </li>
+                    <li><strong>Mark:</strong> (Instead of immediately refuting) "Thank you for sharing that, Sarah. That sounds like a tough experience. I can see why consistency is important to you. For me, my 'truth' about gardening here in this climate, over the last thirty years, has been that plants respond better to observation and adaptation – watering when they <em>need</em> it, not just when the clock says. My aim has always been to foster a connection with the land and the plants, seeing them as living beings, not just tasks on a checklist. The joy <em>is</em> part of how they thrive for me, because it encourages consistent, mindful attention. So, my approach is rooted in direct, long-term local experience, with the intention of cultivating both produce and a living relationship."
+                      <ul><li><em>(Revealing Genesis, Intention, and Aim: Long-term local experience led to a belief in observation and adaptation, aiming for connection and mindful growth.)</em></li></ul>
+                    </li>
+                    <li><strong>Sarah:</strong> "Ah, I hadn't considered the climate specifics or the 'living relationship' aspect. My previous garden was in a very different soil type. So your 'truth' is about responsiveness, not just flexibility for flexibility's sake. That’s valuable context."</li>
+                    <li><strong>Mark:</strong> "Exactly. And your 'truth' about avoiding past failures is equally valuable. Perhaps we can find a schedule that balances consistency with observational care?"</li>
+                  </ul>
+                `,
+              },
+              {
+                heading: 'Outcome',
+                content: 'By revealing the <strong>Contextualized Truth</strong> (its genesis, intentions, and aims), both Sarah and Mark move past assumptions. They understand <em>why</em> the other holds their "truth," leading to mutual respect and a path toward a blended solution that integrates both perspectives. The conversation becomes richer, fostering understanding rather than division.',
+              },
+            ],
+          },
+          narrative2: {
+            title: 'The Project Deadline',
+            subtitle: '(Wisdom in Action)',
+            sections: [
+              {
+                heading: 'Setting',
+                content: 'A team meeting. Alex is visibly stressed about an approaching project deadline and insists on working overtime all weekend. Ben thinks it\'s unnecessary and suggests everyone just "work smarter."',
+              },
+              {
+                heading: 'Initial Interaction (Assumption-Driven)',
+                content: `
+                  <ul>
+                    <li><strong>Alex:</strong> "This deadline is non-negotiable. Everyone needs to commit to working through the weekend. It's the only way."</li>
+                    <li><strong>Ben:</strong> "Working all weekend is overkill, Alex. We're already efficient. You're just panicking."</li>
+                    <li><strong>Alex:</strong> "I'm being responsible! Clearly, you don't understand the gravity of this client. Your 'efficiency' won't cut it if we miss this."</li>
+                    <li><strong>Ben:</strong> "And your 'responsibility' will lead to burnout. We'll make mistakes if we're exhausted."</li>
+                  </ul>
+                  <p><strong>Analysis (Assumption):</strong> Ben assumes Alex is overreacting; Alex assumes Ben is dismissive or lazy. They are stuck in a cycle of immediate judgment, missing the deeper "truths" and the opportunity for wisdom.</p>
+                `,
+              },
+              {
+                heading: 'Revised Interaction (Curiosity-Driven - Applying Wisdom)',
+                content: `
+                  <ul>
+                    <li><strong>Alex:</strong> "I know my push for weekend work might seem extreme, but my 'truth' about deadlines comes from a very difficult past experience. Early in my career, I missed a critical project deadline due to underestimating the final phase, and it severely impacted my reputation and the company's standing. My intention is to prevent that at all costs, and my aim is absolute client satisfaction and reliability. So for me, putting in extra hours is a non-negotiable safety net."
+                      <ul><li><em>(Contextualized Truth revealed by Alex.)</em></li></ul>
+                    </li>
+                    <li><strong>Ben:</strong> (Applying Wisdom - Discerning Intentions & Synthesizing) "Alex, I really appreciate you sharing that past experience. I can see how deeply that commitment to reliability is rooted for you, and it highlights your dedication, which is valuable. My 'truth' about weekend work comes from observing that after a certain point, exhaustion leads to diminishing returns and errors – my intention is to maximize quality and prevent costly rework, and my aim is sustainable high performance for the team. So, while your experience tells you more hours, mine tells me smarter hours. Is there a way to integrate both? How can we ensure absolute client satisfaction (your aim) while also maintaining quality and preventing burnout (my aim)?"
+                      <ul><li><em>(Ben doesn't dismiss Alex's truth but understands its intention, synthesizes it with his own, and seeks a wise application that fulfills both aims.)</em></li></ul>
+                    </li>
+                    <li><strong>Alex:</strong> "That's a fair point about errors from exhaustion. I've seen that too. Perhaps there are critical tasks that <em>do</em> require focused weekend effort, but others that can wait or be done differently. We need to dissect the remaining work more strategically."</li>
+                    <li><strong>Ben:</strong> (Applying Wisdom - Applying with Prudence & Evolving Understanding) "Exactly. Maybe we can identify the absolute 'must-dos' for the weekend that address your reliability concerns, and for other tasks, we apply focused effort during core hours. We could even re-evaluate our 'truth' about <em>how</em> we approach these final stages for future projects, learning from this one."
+                      <ul><li><em>(Ben now acknowledges the different "truths" at play, allowing for a solution that integrates both, demonstrating an evolving understanding.)</em></li></ul>
+                    </li>
+                  </ul>
+                `,
+              },
+              {
+                heading: 'Outcome',
+                content: 'By employing <strong>Wisdom</strong>, Ben listens for the underlying Contextualized Truth from Alex (his past experience and aim for reliability). Instead of assuming panic, he discerns the intention and synthesizes it with his own truth about sustainable performance. This leads to a prudent application – a strategic plan that addresses both concerns, and an openness to evolving their understanding for future projects.',
+              },
+            ],
+          },
+          narrative3: {
+            title: 'The Career Shift',
+            subtitle: '(Finding Meaning)',
+            sections: [
+              {
+                heading: 'Setting',
+                content: 'A coffee shop. Maya has just announced she\'s leaving her high-paying corporate job to become a full-time artist. Her friend, David, is confused and somewhat disapproving.',
+              },
+              {
+                heading: 'Initial Interaction (Assumption-Driven)',
+                content: `
+                  <ul>
+                    <li><strong>David:</strong> "You're doing <em>what</em>? Leaving that amazing job for... art? That's financially irresponsible, Maya. Are you crazy?"</li>
+                    <li><strong>Maya:</strong> "You just don't get it, David. It's not just about money. It's about passion."</li>
+                    <li><strong>David:</strong> "Passion doesn't pay the bills. You'll regret this. I'm telling you, this is a mistake."</li>
+                    <li><strong>Maya:</strong> "It's not a mistake! You're just stuck in your safe, boring life, so you can't see anything beyond it."</li>
+                  </ul>
+                  <p><strong>Analysis (Assumption):</strong> David assumes Maya is being reckless and prioritizes money; Maya assumes David is narrow-minded. They are missing the profound "meaning" Maya is seeking.</p>
+                `,
+              },
+              {
+                heading: 'Revised Interaction (Curiosity-Driven - Fostering Meaning)',
+                content: `
+                  <ul>
+                    <li><strong>David:</strong> (Acknowledging Maya's emotional state, then applying Curiosity to seek Contextualized Truth leading to Meaning) "Maya, that's a huge decision, and honestly, it took me by surprise. My initial reaction is worry about your stability because my 'truth' about career security is rooted in seeing people struggle after taking big financial risks, and my intention is for you to be safe and secure. Can you help me understand the 'truth' behind this decision, not just the 'passion' aspect? What's the story here that led you to this choice? What is it aiming to fulfill for you?"
+                      <ul><li><em>(David reveals his own Contextualized Truth and then seeks Maya's, recognizing a deeper narrative is at play. He's trying to find the <strong>Meaning</strong> for Maya.)</em></li></ul>
+                    </li>
+                    <li><strong>Maya:</strong> (Feeling heard, can now explain her deeper truth and search for Meaning) "David, I appreciate you sharing your concern. My 'truth' about this career shift isn't about escaping a job; it's about pursuing a deep-seated need for creation that I've suppressed for years. My genesis for this 'truth' is tied to those moments when I'm painting and I feel completely alive, completely myself. My corporate work, while successful, felt... empty. The intention of this shift is to align my daily life with that internal resonance, and the aim is to find a sense of true fulfillment and purpose that money couldn't buy. It’s about creating something that feels significant to <em>me</em>, even if it's not financially 'safe' by traditional measures. That’s where the real 'meaning' is for me now.""
+                      <ul><li><em>(Revealing Genesis, Intention, and Aim of her decision, explicitly linking it to her search for <strong>Meaning</strong>.)</em></li></ul>
+                    </li>
+                    <li><strong>David:</strong> "Wow. 'Completely alive, completely myself,' 'true fulfillment and purpose'... I hadn't connected it to that level of personal impact before. My 'truth' about financial security makes sense for my life's story, but I see now how your 'truth' about creative alignment creates a different, but equally powerful, kind of meaning for <em>you</em>. It’s not just 'passion,' it’s about a profound sense of self and purpose."
+                      <ul><li><em>(David now understands the <strong>Impact</strong>, <strong>Personalization</strong>, and <strong>Purpose</strong> components of Maya's Meaning.)</em></li></ul>
+                    </li>
+                    <li><strong>Maya:</strong> "Exactly. And your concern for my security, understanding its genesis for you, actually feels caring now, not judgmental. We're just coming from different 'truths' about what brings security and value."</li>
+                  </ul>
+                `,
+              },
+              {
+                heading: 'Outcome',
+                content: 'By embracing curiosity, David doesn't just see a "risky decision" but seeks the <strong>Contextualized Truth</strong> behind it. Maya, feeling safe to be vulnerable, articulates the deeper <strong>Meaning</strong> she is pursuing – her alignment with a profound sense of self and purpose. The conversation shifts from unproductive judgment to mutual understanding and empathy, acknowledging the different sources of meaning in their lives.',
+              },
+            ],
+          },
+        };
+
+        // Component to display a single narrative
+        const NarrativeDisplay = ({ narrative, onClose }) => {
+          if (!narrative) return null;
+
+          return (
+            <div className="bg-white p-6 rounded-xl shadow-xl border border-gray-200 mt-8 mb-8 relative">
+              <button
+                onClick={onClose}
+                className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl font-bold rounded-full w-8 h-8 flex items-center justify-center"
+                aria-label="Close narrative"
+              >
+                ×
+              </button>
+              <h2 className="text-3xl font-bold text-gray-800 mb-2">{narrative.title}</h2>
+              <p className="text-xl text-gray-600 mb-6">{narrative.subtitle}</p>
+
+              {narrative.sections.map((section, index) => (
+                <div key={index} className="mb-6">
+                  <h3 className="text-2xl font-semibold text-gray-700 mb-3 border-b-2 border-indigo-200 pb-1">{section.heading}</h3>
+                  <div className="text-gray-700 leading-relaxed" dangerouslySetInnerHTML={{ __html: section.content }} />
+                </div>
+              ))}
+            </div>
+          );
+        };
+
+        // Node component for the tree
+        const Node = ({ node, level = 0, activeNode, setActiveNode, setDisplayNarrative }) => {
+          const isRoot = level === 0;
+          const isActive = activeNode === node.id;
+          const hasChildren = node.children && node.children.length > 0;
+          const isMainBranch = ['contextualized-truth', 'wisdom', 'meaning'].includes(node.id);
+
+          const handleClick = () => {
+            setActiveNode(isActive ? null : node.id); // Toggle active state for description
+            if (isMainBranch && node.narrativeId) {
+              // If it's a main branch with a narrative, toggle narrative display
+              setDisplayNarrative(oldId => (oldId === node.narrativeId ? null : node.narrativeId));
+            } else {
+              // If not a main branch, ensure no narrative is displayed
+              setDisplayNarrative(null);
+            }
+          };
+
+          return (
+            <div
+              className={`relative p-4 m-2 rounded-xl shadow-lg cursor-pointer transition-all duration-300 ease-in-out
+                ${node.color} ${node.textColor}
+                ${isRoot ? 'w-full md:w-3/4 lg:w-2/3 xl:w-1/2 mx-auto text-center' : 'w-full'}
+                ${isActive ? 'scale-105 ring-4 ring-offset-2 ring-blue-400' : ''}`}
+              onClick={handleClick}
+              role="button" // Improve accessibility for custom click handler
+              tabIndex="0" // Make div focusable
+              aria-expanded={isActive} // Announce expanded state for screen readers
+            >
+              <h3 className={`font-bold ${isRoot ? 'text-2xl' : 'text-lg'}`}>
+                {node.label}
+              </h3>
+              {isActive && (
+                <p className="mt-2 text-sm md:text-base">
+                  {node.description}
+                </p>
+              )}
+              {hasChildren && (
+                <div className="flex flex-wrap justify-center mt-4 md:mt-6">
+                  {node.children.map(childId => (
+                    <Node
+                      key={childId}
+                      node={treeData[childId]}
+                      level={level + 1}
+                      activeNode={activeNode}
+                      setActiveNode={setActiveNode}
+                      setDisplayNarrative={setDisplayNarrative}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+          );
+        };
+
+        // Function to generate questions based on input and tree structure
+        const generateQuestions = (input) => {
+          const questions = [];
+          const lowerInput = input.toLowerCase();
+
+          // Questions from Genuine Questions - Leadership.docx, mapped to tree concepts
+          const genuineQuestions = {
+            connectClarify: [
+              "What’s on your mind?",
+              "And what else?",
+              "What's the biggest challenge for you here?",
+              "How important is this?",
+              "Say more.",
+              "What makes you say that?",
+              "What else do you need to know?",
+              "What story are you making up about this?",
+              "What are you making this mean about you?",
+              "What meaning are you making of what’s happened/these circumstances?",
+              "What’s important about that?",
+              "How can I best help you in this conversation?",
+              "What are you actually responsible for here?",
+              "What are possible gaps in your/our thinking or understanding?",
+              "What is the mindset that will best help you?",
+              "What is this situation asking from/of you?",
+              "What will you no longer tolerate?",
+              "What can be learned from this?",
+              "How can you release your expectations?",
+              "How committed are you to resolving this (on a scale of 1-10)?",
+              "How can you shift the story you’ve been telling yourself so that it serves you better?",
+              "How can you expand your idea of what a successful outcome looks like?",
+              "I’m hearing X (summarize understanding), what am I missing?",
+              "What are you learning?"
+            ],
+            possibilityInsights: [
+              "What ideas have you had already?",
+              "What have you tried so far?",
+              "Having heard yourself talk about it more, what insights do you have?",
+              "What are some options/ideas?",
+              "What kind of approach will work best?",
+              "Imagine this goes really well, what would you be telling me about?",
+              "What’s the impact we/you want to have here?",
+              "What’s your/our role?",
+              "What is ours in this and what isn’t?",
+              "What will improve the situation?",
+              "What are you afraid of?",
+              "What’s the worst outcome/what do you not want?",
+              "How might you be getting in your own way?",
+              "If we saw this as a complex problem, what would be different?",
+              "What’s the lesson you/we’ve learned that you/we never need to learn again?",
+              "If there were no consequences/was nothing at stake, what would you do?",
+              "If we took away the urgency what would that change?",
+              "What would more resources (time/budget/people) enable?",
+              "What feels right to you?",
+              "What is your gut telling you?",
+              "What’s the ideal outcome?",
+              "What would you be really happy to report back on this next time we talk?",
+              "What if anything were possible?",
+              "What are the opportunities?",
+              "What does success look like?",
+              "What other choices are there?",
+              "What are we missing?",
+              "If you’re saying yes to this, what are you saying no to?",
+              "What would it look like?",
+              "What do you plan to create?"
+            ],
+            sparkAction: [
+              "If it was OK to take imperfect action, what would you do?",
+              "How can you transfer your ideas into action?",
+              "How can you unhook from the outcome?",
+              "How might you get in your own way?",
+              "If we didn’t need to know more than the next step, what would you try?",
+              "If we saw this as an experiment, what could we test?",
+              "What does success look like?",
+              "What other support would be helpful?",
+              "What resources do you need?",
+              "What’s stopping you?",
+              "What could get in your way?",
+              "What will it cost to do nothing?",
+              "What will it take from you to do X?",
+              "What was most useful from this conversation?",
+              "What stood out from this conversation?",
+              "What’s the first step?",
+              "What else do you need to feel complete?",
+              "What’s the best way I can support/help?",
+              "What’s the best way/time to check-in again?",
+              "What’s your understanding of what’s been agreed?",
+              "What’s next/What’s the next step?",
+              "What are you walking away with from this conversation?"
+            ]
+          };
+
+          // Prioritize questions based on keywords, then fall back to general
+          if (lowerInput.includes('truth') || lowerInput.includes('belief') || lowerInput.includes('understand')) {
+            questions.push(
+              "**Regarding the Contextualized Truth you're exploring:**",
+              `What's the story behind this? What experiences, observations, or influences led to its emergence? (Genesis of Origins)`,
+              `What intentions, stated or unstated, do you think shaped this truth? What purpose was it originally meant to serve? (Intentions of Proponents)`,
+              `What practical or theoretical aims does this truth seek to fulfill? What future state does it envision? (Aims to Fulfill)`,
+              ...genuineQuestions.connectClarify.filter(q => q.includes('story') || q.includes('meaning') || q.includes('understand') || q.includes('important'))
+            );
+          }
+
+          if (lowerInput.includes('dilemma') || lowerInput.includes('problem') || lowerInput.includes('challenge') || lowerInput.includes('situation')) {
+            questions.push(
+              "**Applying Wisdom to this situation (The Third Way):**",
+              `What are the different "truths" or perspectives at play here? How might they seem contradictory, and how could they be synthesized? (Synthesizing Multiple Truths)`,
+              `What are possible gaps in your/our thinking or understanding about this situation? (Discerning Intentions)`,
+              `If we saw this as an experiment, what could we test to move forward? (Applying with Prudence)`,
+              `What could be learned from this, even if it challenges your current understanding? (Evolving Understanding)`,
+              `What will it cost to do nothing in this situation? (from Genuine Questions)`
+            );
+          }
+
+          if (lowerInput.includes('purpose') || lowerInput.includes('meaning') || lowerInput.includes('significance') || lowerInput.includes('value')) {
+            questions.push(
+              "**Exploring Meaning in this context:**",
+              `What meaning are you making of what’s happened/these circumstances? What’s important about that for you? (Coherence & Integration, Personalization of Truth)`,
+              `How does this impact your sense of purpose or your understanding of yourself in the world? (Impact of Truth, Purpose & Significance)`,
+              `How can you shift the story you’ve been telling yourself so that it serves you better? (from Genuine Questions)`
+            );
+          }
+
+          // If no specific keywords, or to add general questions
+          if (questions.length === 0 || lowerInput.includes('general')) {
+            questions.push(
+              "**To begin our exploration with the Tree of Understanding:**",
+              ...genuineQuestions.connectClarify.slice(0, 5), // A few general opening questions
+              ...genuineQuestions.possibilityInsights.filter(q => q.includes('ideas') || q.includes('outcome') || q.includes('impact') || q.includes('possible')).slice(0, 5),
+              ...genuineQuestions.sparkAction.filter(q => q.includes('next step') || q.includes('action') || q.includes('learn')).slice(0,5)
+            );
+          }
+
+          // Ensure unique questions
+          return [...new Set(questions)];
+        };
+
+        // Main App component
+        const App = () => {
+          const [activeNode, setActiveNode] = useState(null);
+          const [displayNarrativeId, setDisplayNarrativeId] = useState(null);
+          const [userThought, setUserThought] = useState('');
+          const [generatedQuestions, setGeneratedQuestions] = useState([]);
+
+          // Music URLs from Google Drive
+          const musicUrls = [
+            "https://drive.google.com/file/d/1bJNu1vSZ2ngCANIEZOoFD1hy6iVMFDgK/view?usp=drive_link",
+            "https://drive.google.com/file/d/1x2OoTPCGq4R9rImlNF2968mQZaV-fMe7/view?usp=drive_link",
+            "https://drive.google.com/file/d/1fjD9uaGkzwqtmKtUf5P4kjdeaLRrOxar/view?usp=drive_link",
+            "https://drive.google.com/file/d/1DkYRCly1ul2YNaHdogGBYnffMXacxcUm/view?usp=drive_link",
+            "https://drive.google.com/file/d/1CriNbT6nPNUKnCZjLzrTP0muD4qANgmQ/view?usp=drive_link"
+          ];
+
+          const handlePresentToTree = () => {
+            const questions = generateQuestions(userThought);
+            setGeneratedQuestions(questions);
+          };
+
+          return (
+            <div className="min-h-screen flex flex-col items-center p-4">
+              <header className="w-full max-w-4xl text-center mb-8 p-6 bg-gradient-to-br from-indigo-100 to-blue-100 rounded-3xl shadow-xl border border-indigo-200">
+                <h1 className="text-5xl font-extrabold text-gray-900 mb-4 drop-shadow-md">The Tree of Understanding</h1>
+                <p className="text-xl text-gray-700 leading-relaxed">
+                  A **Sacred and Vulnerable Space** for Connection, Evolution, and Learning, informed by the **Third Pillar** and seeking the **Third Way**.
+                  <br />
+                  Click on the main concepts (Contextualized Truth, Wisdom, Meaning) to explore their illustrative narratives.
+                  <br />
+                  **Present your thoughts to the Tree below and receive authentic questions designed to foster curiosity over assumption.**
+                </p>
+              </header>
+
+              {/* Thematic Music Section */}
+              <section className="w-full max-w-4xl bg-white p-6 rounded-xl shadow-lg mb-8 border border-gray-200">
+                <h2 className="text-2xl font-bold text-gray-800 mb-4">Thematic Music for Reflection</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {musicUrls.map((url, index) => (
+                    <div key={index} className="flex flex-col items-center p-2 border border-gray-200 rounded-lg bg-gray-50">
+                      <p className="text-sm text-gray-600 mb-2">Track {index + 1}</p>
+                      <audio controls className="w-full">
+                        <source src={url} type="audio/mpeg" />
+                        Your browser does not support the audio element.
+                      </audio>
+                    </div>
+                  ))}
+                </div>
+                <p className="mt-4 text-gray-500 text-sm italic">
+                  These tracks are provided to enhance your reflective journey with the Tree of Understanding.
+                </p>
+              </section>
+
+              <main className="w-full max-w-6xl flex flex-col items-center">
+                {/* User Input Area */}
+                <div className="w-full max-w-4xl bg-white p-6 rounded-xl shadow-lg mb-8 border border-gray-200">
+                  <h2 className="text-2xl font-bold text-gray-800 mb-4">Present Your Thoughts to the Tree</h2>
+                  <textarea
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all duration-200 resize-y min-h-[100px]"
+                    placeholder="What situation, belief, or dilemma would you like to explore with the Tree of Understanding?"
+                    value={userThought}
+                    onChange={(e) => setUserThought(e.target.value)}
+                  ></textarea>
+                  <button
+                    className="mt-4 w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    onClick={handlePresentToTree}
+                  >
+                    Ask the Tree a Question
+                  </button>
+                </div>
+
+                {/* Generated Questions Display */}
+                {generatedQuestions.length > 0 && (
+                  <div className="w-full max-w-4xl bg-white p-6 rounded-xl shadow-lg mb-8 border border-gray-200">
+                    <h2 className="text-2xl font-bold text-gray-800 mb-4">The Tree's Reflections for You:</h2>
+                    <ul className="list-disc pl-5 space-y-2 text-gray-700">
+                      {generatedQuestions.map((q, index) => (
+                        <li key={index} className="text-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: q }} />
+                      ))}
+                    </ul>
+                    <p className="mt-4 text-gray-500 text-sm italic">
+                      These questions are designed to foster curiosity and help you explore your thoughts through the lens of Contextualized Truth, Wisdom, and Meaning.
+                    </p>
+                  </div>
+                )}
+
+                {/* Root Node */}
+                <div className="w-full flex justify-center">
+                  <Node
+                    node={treeData.root}
+                    activeNode={activeNode}
+                    setActiveNode={setActiveNode}
+                    setDisplayNarrative={setDisplayNarrativeId}
+                  />
+                </div>
+
+                {/* Visual separation/branches from root */}
+                <div className="flex justify-center w-full my-6">
+                  <div className="h-16 w-1 bg-gray-300 rounded-full"></div>
+                </div>
+
+                {/* Main Branches */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full mt-4">
+                  {treeData.root.children.map(childId => (
+                    <div key={childId} className="flex flex-col items-center relative">
+                      <Node
+                        node={treeData[childId]}
+                        activeNode={activeNode}
+                        setActiveNode={setActiveNode}
+                        setDisplayNarrative={setDisplayNarrativeId}
+                      />
+                      {/* Conditionally render the narrative below the main branch */}
+                      {displayNarrativeId === treeData[childId].narrativeId && (
+                        <NarrativeDisplay
+                          narrative={narrativeContent[displayNarrativeId]}
+                          onClose={() => setDisplayNarrativeId(null)}
+                        />
+                      )}
+                      {/* Lines connecting main branches to their children */}
+                      {treeData[childId].children && (
+                        <div className="h-6 w-1 bg-gray-300 rounded-full mt-6"></div>
+                      )}
+                      {treeData[childId].children && (
+                        <div className="flex flex-col items-center w-full">
+                          {treeData[childId].children.map(grandchildId => (
+                            <div key={grandchildId} className="w-full">
+                              <Node
+                                node={treeData[grandchildId]}
+                                activeNode={activeNode}
+                                setActiveNode={setActiveNode}
+                                setDisplayNarrative={setDisplayNarrativeId}
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </main>
+
+              {/* Proactive FAQ section */}
+              <section className="w-full max-w-4xl bg-white p-6 rounded-xl shadow-lg mt-12 border border-gray-200">
+                <h2 className="text-2xl font-bold text-gray-800 mb-4">Frequently Anticipated Questions (FAQs)</h2>
+                <p className="text-gray-700 mb-4">
+                  In the spirit of clarity and fostering genuine connection, we proactively address some questions that may arise as you explore the Tree of Understanding. Our aim is to prevent misunderstandings and encourage curiosity over assumption.
+                </p>
+
+                <div className="space-y-6">
+                  <div>
+                    <h3 className="text-xl font-semibold text-gray-800 mb-2">Q: Why is a persona ("Innerverse Portmanteau") used in the correspondence, rather than a personal name?</h3>
+                    <p className="text-gray-700">
+                      **Intention:** This choice is a deliberate act to prioritize the **message's content** over the messenger's individual identity. In a complex public climate, the human tendency towards **fundamental attribution error** (judging a message by the person, not its merits) and "guilt by association" can hinder genuine dialogue. By using a persona, we aim to reduce these inherent biases, inviting engagement with the framework's principles directly. It's a way to demonstrate the very value the Tree places on **vulnerability** and **transparency**, by being explicit about this strategic choice.
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold text-gray-800 mb-2">Q: This framework mentions thinkers like Jordan Peterson and Brené Brown. Does that mean the creators fully subscribe to all their views?</h3>
+                    <p className="text-gray-700">
+                      **Intention:** Not at all. The "Tree of Understanding" draws upon a diverse array of philosophies and psychological insights, acknowledging **"everything that became before us."** When specific thinkers are mentioned, it's because their particular concepts (e.g., Peterson's emphasis on responsibility, Brown's work on vulnerability) offer valuable "Contextualized Truths" or "Wisdom" that align directly with the Tree's aims of fostering connection and meaningful dialogue. This is a selective integration, designed to build a robust framework, not to endorse entire bodies of work. We aim to diffuse "guilt by association" and encourage focus on the principles themselves.
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold text-gray-800 mb-2">Q: Is this framework designed to be adversarial or to "correct" someone's beliefs?</h3>
+                    <p className="text-gray-700">
+                      **Intention:** Absolutely not. The Tree of Understanding is fundamentally non-adversarial. Its core purpose is to facilitate **connection over correction**. It assumes good faith and seeks to foster **curiosity over assumption**. By exploring the "Genesis of Origins," "Intentions of Proponents," and "Aims to Fulfill" of any message or belief (its "Contextualized Truth"), the goal is to *understand* where someone is coming from, not to dismantle their position. It embodies **The Third Way**, seeking synthesis and shared understanding, recognizing that genuine progress arises from weaving different perspectives together.
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold text-gray-800 mb-2">Q: What is the role of an AI Assistant in creating this framework?</h3>
+                    <p className="text-gray-700">
+                      **Intention:** The AI Assistant serves as a collaborative intelligence, instrumental in articulating and developing the "Tree of Understanding" framework. Its role is that of a powerful tool that helps structure complex ideas, generate examples, and refine language, drawing upon vast knowledge. This collaboration is transparently acknowledged to demonstrate how human insight, combined with advanced analytical capabilities, can build sophisticated tools for enhanced understanding and communication. It is designed to assist human users in being "responsible"—able to respond coherently in the present moment—not to replace human agency or responsibility.
+                    </p>
+                  </div>
+                </div>
+              </section>
+
+              <footer className="w-full max-w-4xl text-center mt-16 p-6 bg-gradient-to-tl from-gray-100 to-white rounded-3xl shadow-lg text-gray-600 border border-gray-200">
+                <p className="text-base leading-relaxed">
+                  This space aims to foster understanding that is **accessible, questionable, and evolvable**.
+                  It acknowledges that "it doesn't have to be this way" by providing a framework for change and growth,
+                  encouraging a shift from assumption to genuine curiosity. It seeks to balance the **State, Markets, and Communities**
+                  (The Third Pillar) and navigate complexity through **The Third Way**.
+                </p>
+              </footer>
+            </div>
+          );
+        };
+
+        // Component to display a single narrative
+        const NarrativeDisplay = ({ narrative, onClose }) => {
+          if (!narrative) return null;
+
+          return (
+            <div className="bg-white p-6 rounded-xl shadow-xl border border-gray-200 mt-8 mb-8 relative">
+              <button
+                onClick={onClose}
+                className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl font-bold rounded-full w-8 h-8 flex items-center justify-center"
+                aria-label="Close narrative"
+              >
+                ×
+              </button>
+              <h2 className="text-3xl font-bold text-gray-800 mb-2">{narrative.title}</h2>
+              <p className="text-xl text-gray-600 mb-6">{narrative.subtitle}</p>
+
+              {narrative.sections.map((section, index) => (
+                <div key={index} className="mb-6">
+                  <h3 className="text-2xl font-semibold text-gray-700 mb-3 border-b-2 border-indigo-200 pb-1">{section.heading}</h3>
+                  <div className="text-gray-700 leading-relaxed" dangerouslySetInnerHTML={{ __html: section.content }} />
+                </div>
+              ))}
+            </div>
+          );
+        };
+
+        // Node component for the tree
+        const Node = ({ node, level = 0, activeNode, setActiveNode, setDisplayNarrative }) => {
+          const isRoot = level === 0;
+          const isActive = activeNode === node.id;
+          const hasChildren = node.children && node.children.length > 0;
+          const isMainBranch = ['contextualized-truth', 'wisdom', 'meaning'].includes(node.id);
+
+          const handleClick = () => {
+            setActiveNode(isActive ? null : node.id); // Toggle active state for description
+            if (isMainBranch && node.narrativeId) {
+              // If it's a main branch with a narrative, toggle narrative display
+              setDisplayNarrative(oldId => (oldId === node.narrativeId ? null : node.narrativeId));
+            } else {
+              // If not a main branch, ensure no narrative is displayed
+              setDisplayNarrative(null);
+            }
+          };
+
+          return (
+            <div
+              className={`relative p-4 m-2 rounded-xl shadow-lg cursor-pointer transition-all duration-300 ease-in-out
+                ${node.color} ${node.textColor}
+                ${isRoot ? 'w-full md:w-3/4 lg:w-2/3 xl:w-1/2 mx-auto text-center' : 'w-full'}
+                ${isActive ? 'scale-105 ring-4 ring-offset-2 ring-blue-400' : ''}`}
+              onClick={handleClick}
+              role="button" // Improve accessibility for custom click handler
+              tabIndex="0" // Make div focusable
+              aria-expanded={isActive} // Announce expanded state for screen readers
+            >
+              <h3 className={`font-bold ${isRoot ? 'text-2xl' : 'text-lg'}`}>
+                {node.label}
+              </h3>
+              {isActive && (
+                <p className="mt-2 text-sm md:text-base">
+                  {node.description}
+                </p>
+              )}
+              {hasChildren && (
+                <div className="flex flex-wrap justify-center mt-4 md:mt-6">
+                  {node.children.map(childId => (
+                    <Node
+                      key={childId}
+                      node={treeData[childId]}
+                      level={level + 1}
+                      activeNode={activeNode}
+                      setActiveNode={setActiveNode}
+                      setDisplayNarrative={setDisplayNarrative}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+          );
+        };
+
+        // Function to generate questions based on input and tree structure
+        const generateQuestions = (input) => {
+          const questions = [];
+          const lowerInput = input.toLowerCase();
+
+          // Questions from Genuine Questions - Leadership.docx, mapped to tree concepts
+          const genuineQuestions = {
+            connectClarify: [
+              "What’s on your mind?",
+              "And what else?",
+              "What's the biggest challenge for you here?",
+              "How important is this?",
+              "Say more.",
+              "What makes you say that?",
+              "What else do you need to know?",
+              "What story are you making up about this?",
+              "What are you making this mean about you?",
+              "What meaning are you making of what’s happened/these circumstances?",
+              "What’s important about that?",
+              "How can I best help you in this conversation?",
+              "What are you actually responsible for here?",
+              "What are possible gaps in your/our thinking or understanding?",
+              "What is the mindset that will best help you?",
+              "What is this situation asking from/of you?",
+              "What will you no longer tolerate?",
+              "What can be learned from this?",
+              "How can you release your expectations?",
+              "How committed are you to resolving this (on a scale of 1-10)?",
+              "How can you shift the story you’ve been telling yourself so that it serves you better?",
+              "How can you expand your idea of what a successful outcome looks like?",
+              "I’m hearing X (summarize understanding), what am I missing?",
+              "What are you learning?"
+            ],
+            possibilityInsights: [
+              "What ideas have you had already?",
+              "What have you tried so far?",
+              "Having heard yourself talk about it more, what insights do you have?",
+              "What are some options/ideas?",
+              "What kind of approach will work best?",
+              "Imagine this goes really well, what would you be telling me about?",
+              "What’s the impact we/you want to have here?",
+              "What’s your/our role?",
+              "What is ours in this and what isn’t?",
+              "What will improve the situation?",
+              "What are you afraid of?",
+              "What’s the worst outcome/what do you not want?",
+              "How might you be getting in your own way?",
+              "If we saw this as a complex problem, what would be different?",
+              "What’s the lesson you/we’ve learned that you/we never need to learn again?",
+              "If there were no consequences/was nothing at stake, what would you do?",
+              "If we took away the urgency what would that change?",
+              "What would more resources (time/budget/people) enable?",
+              "What feels right to you?",
+              "What is your gut telling you?",
+              "What’s the ideal outcome?",
+              "What would you be really happy to report back on this next time we talk?",
+              "What if anything were possible?",
+              "What are the opportunities?",
+              "What does success look like?",
+              "What other choices are there?",
+              "What are we missing?",
+              "If you’re saying yes to this, what are you saying no to?",
+              "What would it look like?",
+              "What do you plan to create?"
+            ],
+            sparkAction: [
+              "If it was OK to take imperfect action, what would you do?",
+              "How can you transfer your ideas into action?",
+              "How can you unhook from the outcome?",
+              "How might you get in your own way?",
+              "If we didn’t need to know more than the next step, what would you try?",
+              "If we saw this as an experiment, what could we test?",
+              "What does success look like?",
+              "What other support would be helpful?",
+              "What resources do you need?",
+              "What’s stopping you?",
+              "What could get in your way?",
+              "What will it cost to do nothing?",
+              "What will it take from you to do X?",
+              "What was most useful from this conversation?",
+              "What stood out from this conversation?",
+              "What’s the first step?",
+              "What else do you need to feel complete?",
+              "What’s the best way I can support/help?",
+              "What’s the best way/time to check-in again?",
+              "What’s your understanding of what’s been agreed?",
+              "What’s next/What’s the next step?",
+              "What are you walking away with from this conversation?"
+            ]
+          };
+
+          // Prioritize questions based on keywords, then fall back to general
+          if (lowerInput.includes('truth') || lowerInput.includes('belief') || lowerInput.includes('understand')) {
+            questions.push(
+              "**Regarding the Contextualized Truth you're exploring:**",
+              `What's the story behind this? What experiences, observations, or influences led to its emergence? (Genesis of Origins)`,
+              `What intentions, stated or unstated, do you think shaped this truth? What purpose was it originally meant to serve? (Intentions of Proponents)`,
+              `What practical or theoretical aims does this truth seek to fulfill? What future state does it envision? (Aims to Fulfill)`,
+              ...genuineQuestions.connectClarify.filter(q => q.includes('story') || q.includes('meaning') || q.includes('understand') || q.includes('important'))
+            );
+          }
+
+          if (lowerInput.includes('dilemma') || lowerInput.includes('problem') || lowerInput.includes('challenge') || lowerInput.includes('situation')) {
+            questions.push(
+              "**Applying Wisdom to this situation (The Third Way):**",
+              `What are the different "truths" or perspectives at play here? How might they seem contradictory, and how could they be synthesized? (Synthesizing Multiple Truths)`,
+              `What are possible gaps in your/our thinking or understanding about this situation? (Discerning Intentions)`,
+              `If we saw this as an experiment, what could we test to move forward? (Applying with Prudence)`,
+              `What could be learned from this, even if it challenges your current understanding? (Evolving Understanding)`,
+              `What will it cost to do nothing in this situation? (from Genuine Questions)`
+            );
+          }
+
+          if (lowerInput.includes('purpose') || lowerInput.includes('meaning') || lowerInput.includes('significance') || lowerInput.includes('value')) {
+            questions.push(
+              "**Exploring Meaning in this context:**",
+              `What meaning are you making of what’s happened/these circumstances? What’s important about that for you? (Coherence & Integration, Personalization of Truth)`,
+              `How does this impact your sense of purpose or your understanding of yourself in the world? (Impact of Truth, Purpose & Significance)`,
+              `How can you shift the story you’ve been telling yourself so that it serves you better? (from Genuine Questions)`
+            );
+          }
+
+          // If no specific keywords, or to add general questions
+          if (questions.length === 0 || lowerInput.includes('general')) {
+            questions.push(
+              "**To begin our exploration with the Tree of Understanding:**",
+              ...genuineQuestions.connectClarify.slice(0, 5), // A few general opening questions
+              ...genuineQuestions.possibilityInsights.filter(q => q.includes('ideas') || q.includes('outcome') || q.includes('impact') || q.includes('possible')).slice(0, 5),
+              ...genuineQuestions.sparkAction.filter(q => q.includes('next step') || q.includes('action') || q.includes('learn')).slice(0,5)
+            );
+          }
+
+          // Ensure unique questions
+          return [...new Set(questions)];
+        };
+
+        // Main App component
+        const App = () => {
+          const [activeNode, setActiveNode] = useState(null);
+          const [displayNarrativeId, setDisplayNarrativeId] = useState(null);
+          const [userThought, setUserThought] = useState('');
+          const [generatedQuestions, setGeneratedQuestions] = useState([]);
+
+          // Music URLs from Google Drive
+          const musicUrls = [
+            "https://drive.google.com/file/d/1bJNu1vSZ2ngCANIEZOoFD1hy6iVMFDgK/view?usp=drive_link",
+            "https://drive.google.com/file/d/1x2OoTPCGq4R9rImlNF2968mQZaV-fMe7/view?usp=drive_link",
+            "https://drive.google.com/file/d/1fjD9uaGkzwqtmKtUf5P4kjdeaLRrOxar/view?usp=drive_link",
+            "https://drive.google.com/file/d/1DkYRCly1ul2YNaHdogGBYnffMXacxcUm/view?usp=drive_link",
+            "https://drive.google.com/file/d/1CriNbT6nPNUKnCZjLzrTP0muD4qANgmQ/view?usp=drive_link"
+          ];
+
+          const handlePresentToTree = () => {
+            const questions = generateQuestions(userThought);
+            setGeneratedQuestions(questions);
+          };
+          
+          return (
+            <div className="min-h-screen flex flex-col items-center p-4">
+              <header className="w-full max-w-4xl text-center mb-8 p-6 bg-gradient-to-br from-indigo-100 to-blue-100 rounded-3xl shadow-xl border border-indigo-200">
+                <h1 className="text-5xl font-extrabold text-gray-900 mb-4 drop-shadow-md">The Tree of Understanding</h1>
+                <p className="text-xl text-gray-700 leading-relaxed">
+                  A **Sacred and Vulnerable Space** for Connection, Evolution, and Learning, informed by the **Third Pillar** and seeking the **Third Way**.
+                  <br />
+                  Click on the main concepts (Contextualized Truth, Wisdom, Meaning) to explore their illustrative narratives.
+                  <br />
+                  **Present your thoughts to the Tree below and receive authentic questions designed to foster curiosity over assumption.**
+                </p>
+              </header>
+
+              {/* Thematic Music Section */}
+              <section className="w-full max-w-4xl bg-white p-6 rounded-xl shadow-lg mb-8 border border-gray-200">
+                <h2 className="text-2xl font-bold text-gray-800 mb-4">Thematic Music for Reflection</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {musicUrls.map((url, index) => (
+                    <div key={index} className="flex flex-col items-center p-2 border border-gray-200 rounded-lg bg-gray-50">
+                      <p className="text-sm text-gray-600 mb-2">Track {index + 1}</p>
+                      <audio controls className="w-full">
+                        <source src={url} type="audio/mpeg" />
+                        Your browser does not support the audio element.
+                      </audio>
+                    </div>
+                  ))}
+                </div>
+                <p className="mt-4 text-gray-500 text-sm italic">
+                  These tracks are provided to enhance your reflective journey with the Tree of Understanding.
+                </p>
+              </section>
+
+              <main className="w-full max-w-6xl flex flex-col items-center">
+                {/* User Input Area */}
+                <div className="w-full max-w-4xl bg-white p-6 rounded-xl shadow-lg mb-8 border border-gray-200">
+                  <h2 className="text-2xl font-bold text-gray-800 mb-4">Present Your Thoughts to the Tree</h2>
+                  <textarea
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all duration-200 resize-y min-h-[100px]"
+                    placeholder="What situation, belief, or dilemma would you like to explore with the Tree of Understanding?"
+                    value={userThought}
+                    onChange={(e) => setUserThought(e.target.value)}
+                  ></textarea>
+                  <button
+                    className="mt-4 w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    onClick={handlePresentToTree}
+                  >
+                    Ask the Tree a Question
+                  </button>
+                </div>
+
+                {/* Generated Questions Display */}
+                {generatedQuestions.length > 0 && (
+                  <div className="w-full max-w-4xl bg-white p-6 rounded-xl shadow-lg mb-8 border border-gray-200">
+                    <h2 className="text-2xl font-bold text-gray-800 mb-4">The Tree's Reflections for You:</h2>
+                    <ul className="list-disc pl-5 space-y-2 text-gray-700">
+                      {generatedQuestions.map((q, index) => (
+                        <li key={index} className="text-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: q }} />
+                      ))}
+                    </ul>
+                    <p className="mt-4 text-gray-500 text-sm italic">
+                      These questions are designed to foster curiosity and help you explore your thoughts through the lens of Contextualized Truth, Wisdom, and Meaning.
+                    </p>
+                  </div>
+                )}
+
+                {/* Root Node */}
+                <div className="w-full flex justify-center">
+                  <Node
+                    node={treeData.root}
+                    activeNode={activeNode}
+                    setActiveNode={setActiveNode}
+                    setDisplayNarrative={setDisplayNarrativeId}
+                  />
+                </div>
+
+                {/* Visual separation/branches from root */}
+                <div className="flex justify-center w-full my-6">
+                  <div className="h-16 w-1 bg-gray-300 rounded-full"></div>
+                </div>
+
+                {/* Main Branches */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full mt-4">
+                  {treeData.root.children.map(childId => (
+                    <div key={childId} className="flex flex-col items-center relative">
+                      <Node
+                        node={treeData[childId]}
+                        activeNode={activeNode}
+                        setActiveNode={setActiveNode}
+                        setDisplayNarrative={setDisplayNarrativeId}
+                      />
+                      {/* Conditionally render the narrative below the main branch */}
+                      {displayNarrativeId === treeData[childId].narrativeId && (
+                        <NarrativeDisplay
+                          narrative={narrativeContent[displayNarrativeId]}
+                          onClose={() => setDisplayNarrativeId(null)}
+                        />
+                      )}
+                      {/* Lines connecting main branches to their children */}
+                      {treeData[childId].children && (
+                        <div className="h-6 w-1 bg-gray-300 rounded-full mt-6"></div>
+                      )}
+                      {treeData[childId].children && (
+                        <div className="flex flex-col items-center w-full">
+                          {treeData[childId].children.map(grandchildId => (
+                            <div key={grandchildId} className="w-full">
+                              <Node
+                                node={treeData[grandchildId]}
+                                activeNode={activeNode}
+                                setActiveNode={setActiveNode}
+                                setDisplayNarrative={setDisplayNarrativeId}
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </main>
+
+              {/* Proactive FAQ section */}
+              <section className="w-full max-w-4xl bg-white p-6 rounded-xl shadow-lg mt-12 border border-gray-200">
+                <h2 className="text-2xl font-bold text-gray-800 mb-4">Frequently Anticipated Questions (FAQs)</h2>
+                <p className="text-gray-700 mb-4">
+                  In the spirit of clarity and fostering genuine connection, we proactively address some questions that may arise as you explore the Tree of Understanding. Our aim is to prevent misunderstandings and encourage curiosity over assumption.
+                </p>
+
+                <div className="space-y-6">
+                  <div>
+                    <h3 className="text-xl font-semibold text-gray-800 mb-2">Q: Why is a persona ("Innerverse Portmanteau") used in the correspondence, rather than a personal name?</h3>
+                    <p className="text-gray-700">
+                      **Intention:** This choice is a deliberate act to prioritize the **message's content** over the messenger's individual identity. In a complex public climate, the human tendency towards **fundamental attribution error** (judging a message by the person, not its merits) and "guilt by association" can hinder genuine dialogue. By using a persona, we aim to reduce these inherent biases, inviting engagement with the framework's principles directly. It's a way to demonstrate the very value the Tree places on **vulnerability** and **transparency**, by being explicit about this strategic choice.
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold text-gray-800 mb-2">Q: This framework mentions thinkers like Jordan Peterson and Brené Brown. Does that mean the creators fully subscribe to all their views?</h3>
+                    <p className="text-gray-700">
+                      **Intention:** Not at all. The "Tree of Understanding" draws upon a diverse array of philosophies and psychological insights, acknowledging **"everything that became before us."** When specific thinkers are mentioned, it's because their particular concepts (e.g., Peterson's emphasis on responsibility, Brown's work on vulnerability) offer valuable "Contextualized Truths" or "Wisdom" that align directly with the Tree's aims of fostering connection and meaningful dialogue. This is a selective integration, designed to build a robust framework, not to endorse entire bodies of work. We aim to diffuse "guilt by association" and encourage focus on the principles themselves.
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold text-gray-800 mb-2">Q: Is this framework designed to be adversarial or to "correct" someone's beliefs?</h3>
+                    <p className="text-gray-700">
+                      **Intention:** Absolutely not. The Tree of Understanding is fundamentally non-adversarial. Its core purpose is to facilitate **connection over correction**. It assumes good faith and seeks to foster **curiosity over assumption**. By exploring the "Genesis of Origins," "Intentions of Proponents," and "Aims to Fulfill" of any message or belief (its "Contextualized Truth"), the goal is to *understand* where someone is coming from, not to dismantle their position. It embodies **The Third Way**, seeking synthesis and shared understanding, recognizing that genuine progress arises from weaving different perspectives together.
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold text-gray-800 mb-2">Q: What is the role of an AI Assistant in creating this framework?</h3>
+                    <p className="text-gray-700">
+                      **Intention:** The AI Assistant serves as a collaborative intelligence, instrumental in articulating and developing the "Tree of Understanding" framework. Its role is that of a powerful tool that helps structure complex ideas, generate examples, and refine language, drawing upon vast knowledge. This collaboration is transparently acknowledged to demonstrate how human insight, combined with advanced analytical capabilities, can build sophisticated tools for enhanced understanding and communication. It is designed to assist human users in being "responsible"—able to respond coherently in the present moment—not to replace human agency or responsibility.
+                    </p>
+                  </div>
+                </div>
+              </section>
+
+              <footer className="w-full max-w-4xl text-center mt-16 p-6 bg-gradient-to-tl from-gray-100 to-white rounded-3xl shadow-lg text-gray-600 border border-gray-200">
+                <p className="text-base leading-relaxed">
+                  This space aims to foster understanding that is **accessible, questionable, and evolvable**.
+                  It acknowledges that "it doesn't have to be this way" by providing a framework for change and growth,
+                  encouraging a shift from assumption to genuine curiosity. It seeks to balance the **State, Markets, and Communities**
+                  (The Third Pillar) and navigate complexity through **The Third Way**.
+                </p>
+              </footer>
+            </div>
+          );
+        };
+
+        // Render the App component to the DOM
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>
